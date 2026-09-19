@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 880" width="900" height="880" font-family="ui-sans-serif, -apple-system, 'Helvetica Neue', Arial, sans-serif">
+<rect width="900" height="880" fill="#fbfcfd"/>
+<rect x="50" y="700" width="810" height="146" rx="10" fill="#fff8e8" stroke="#e3d3a8" stroke-width="1.5"/>
+<text x="50" y="52" font-size="24" font-weight="600" fill="#1f2933">Data model</text>
+<text x="50" y="80" font-size="16" fill="#4a5560">A category has many accounts. A snapshot is one month. An entry is one account&#39;s number in one month.</text>
+<path d="M320 190 H400" stroke="#8d99a6" stroke-width="2"/>
+<text x="336" y="180" font-size="15" font-weight="700" fill="#4a5560" text-anchor="middle">1</text>
+<text x="384" y="180" font-size="15" font-weight="700" fill="#4a5560" text-anchor="middle">n</text>
+<path d="M545 320 V400" stroke="#8d99a6" stroke-width="2"/>
+<text x="530" y="330" font-size="15" font-weight="700" fill="#4a5560" text-anchor="middle">1</text>
+<text x="530" y="392" font-size="15" font-weight="700" fill="#4a5560" text-anchor="middle">n</text>
+<path d="M320 470 H400" stroke="#8d99a6" stroke-width="2"/>
+<text x="336" y="460" font-size="15" font-weight="700" fill="#4a5560" text-anchor="middle">1</text>
+<text x="384" y="460" font-size="15" font-weight="700" fill="#4a5560" text-anchor="middle">n</text>
+<circle cx="320" cy="190" r="4" fill="#8d99a6"/>
+<circle cx="400" cy="190" r="4" fill="#8d99a6"/>
+<circle cx="545" cy="320" r="4" fill="#8d99a6"/>
+<circle cx="545" cy="400" r="4" fill="#8d99a6"/>
+<circle cx="320" cy="470" r="4" fill="#8d99a6"/>
+<circle cx="400" cy="470" r="4" fill="#8d99a6"/>
+<rect x="50" y="120" width="270" height="136" rx="9" fill="#ffffff" stroke="#c7d0d9" stroke-width="1.5"/>
+<path d="M50 160 v-31 a9 9 0 0 1 9 -9 h252 a9 9 0 0 1 9 9 v31 z" fill="#2f3e4e"/>
+<text x="66" y="147" font-size="17" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#ffffff">category</text>
+<text x="66" y="181" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="600" fill="#1f6feb">id</text>
+<text x="272" y="181" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<text x="304" y="181" text-anchor="end" font-size="12" letter-spacing="0.5" font-weight="600" fill="#4a5560">PK</text>
+<rect x="51.5" y="192" width="267" height="32" fill="#f4f7fa"/>
+<text x="66" y="213" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f2933">name</text>
+<text x="304" y="213" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">TEXT</text>
+<text x="66" y="245" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f2933">sort_order</text>
+<text x="304" y="245" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<rect x="400" y="120" width="290" height="200" rx="9" fill="#ffffff" stroke="#c7d0d9" stroke-width="1.5"/>
+<path d="M400 160 v-31 a9 9 0 0 1 9 -9 h272 a9 9 0 0 1 9 9 v31 z" fill="#2f3e4e"/>
+<text x="416" y="147" font-size="17" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#ffffff">account</text>
+<text x="416" y="181" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="600" fill="#1f6feb">id</text>
+<text x="642" y="181" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<text x="674" y="181" text-anchor="end" font-size="12" letter-spacing="0.5" font-weight="600" fill="#4a5560">PK</text>
+<rect x="401.5" y="192" width="287" height="32" fill="#f4f7fa"/>
+<text x="416" y="213" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f6feb">category_id</text>
+<text x="642" y="213" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<text x="674" y="213" text-anchor="end" font-size="12" letter-spacing="0.5" font-weight="600" fill="#4a5560">FK</text>
+<text x="416" y="245" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f2933">name</text>
+<text x="674" y="245" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">TEXT</text>
+<rect x="401.5" y="256" width="287" height="32" fill="#f4f7fa"/>
+<text x="416" y="277" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f2933">is_active</text>
+<text x="674" y="277" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<text x="416" y="309" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f2933">sort_order</text>
+<text x="674" y="309" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<rect x="50" y="400" width="270" height="104" rx="9" fill="#ffffff" stroke="#c7d0d9" stroke-width="1.5"/>
+<path d="M50 440 v-31 a9 9 0 0 1 9 -9 h252 a9 9 0 0 1 9 9 v31 z" fill="#2f3e4e"/>
+<text x="66" y="427" font-size="17" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#ffffff">snapshot</text>
+<text x="66" y="461" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="600" fill="#1f6feb">id</text>
+<text x="272" y="461" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<text x="304" y="461" text-anchor="end" font-size="12" letter-spacing="0.5" font-weight="600" fill="#4a5560">PK</text>
+<rect x="51.5" y="472" width="267" height="32" fill="#f4f7fa"/>
+<text x="66" y="493" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f2933">year_month</text>
+<text x="304" y="493" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">TEXT</text>
+<rect x="400" y="400" width="290" height="168" rx="9" fill="#ffffff" stroke="#c7d0d9" stroke-width="1.5"/>
+<path d="M400 440 v-31 a9 9 0 0 1 9 -9 h272 a9 9 0 0 1 9 9 v31 z" fill="#2f3e4e"/>
+<text x="416" y="427" font-size="17" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#ffffff">entry</text>
+<text x="416" y="461" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="600" fill="#1f6feb">id</text>
+<text x="642" y="461" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<text x="674" y="461" text-anchor="end" font-size="12" letter-spacing="0.5" font-weight="600" fill="#4a5560">PK</text>
+<rect x="401.5" y="472" width="287" height="32" fill="#f4f7fa"/>
+<text x="416" y="493" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f6feb">snapshot_id</text>
+<text x="642" y="493" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<text x="674" y="493" text-anchor="end" font-size="12" letter-spacing="0.5" font-weight="600" fill="#4a5560">FK</text>
+<text x="416" y="525" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f6feb">account_id</text>
+<text x="642" y="525" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<text x="674" y="525" text-anchor="end" font-size="12" letter-spacing="0.5" font-weight="600" fill="#4a5560">FK</text>
+<rect x="401.5" y="536" width="287" height="32" fill="#f4f7fa"/>
+<text x="416" y="557" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f2933">value</text>
+<text x="674" y="557" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">INTEGER</text>
+<rect x="50" y="560" width="270" height="104" rx="9" fill="#ffffff" stroke="#c7d0d9" stroke-width="1.5"/>
+<path d="M50 600 v-31 a9 9 0 0 1 9 -9 h252 a9 9 0 0 1 9 9 v31 z" fill="#2f3e4e"/>
+<text x="66" y="587" font-size="17" font-weight="600" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#ffffff">setting</text>
+<text x="66" y="621" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="600" fill="#1f6feb">key</text>
+<text x="272" y="621" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">TEXT</text>
+<text x="304" y="621" text-anchor="end" font-size="12" letter-spacing="0.5" font-weight="600" fill="#4a5560">PK</text>
+<rect x="51.5" y="632" width="267" height="32" fill="#f4f7fa"/>
+<text x="66" y="653" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" font-weight="400" fill="#1f2933">value</text>
+<text x="304" y="653" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" fill="#7a8794">TEXT</text>
+<text x="336" y="600" font-size="14" fill="#4a5560">standalone — no relations,</text>
+<text x="336" y="620" font-size="14" fill="#4a5560">holds settings such as the check day</text>
+<text x="76" y="730" font-size="13" font-weight="700" letter-spacing="1" fill="#8a6d1f">RULES</text>
+<text x="76" y="758" font-size="15" fill="#6b5514">•  Amounts are stored as whole numbers — no decimals. SQLite has no boolean type, so is_active holds 0 or 1.</text>
+<text x="76" y="786" font-size="15" fill="#6b5514">•  A month with no entry rows means “not entered”, never 0.</text>
+<text x="76" y="814" font-size="15" fill="#6b5514">•  Accounts are deactivated (is_active), never deleted while they have history.</text>
+<text x="76" y="842" font-size="15" fill="#6b5514">•  The category sits on the account, so moving an account moves its whole history.</text>
+</svg>

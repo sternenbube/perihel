@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700" font-family="ui-sans-serif, -apple-system, 'Helvetica Neue', Arial, sans-serif">
+<rect width="900" height="700" fill="#fbfcfd"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5560"/></marker></defs>
+<text x="50" y="52" font-size="24" font-weight="600" fill="#1f2933">Application layers</text>
+<text x="50" y="80" font-size="16" fill="#4a5560">Only the database layer contains SQL. Screens ask for finished results.</text>
+<rect x="50" y="110" width="800" height="150" rx="12" fill="#eef4ff" stroke="#b9d0f2" stroke-width="1.5"/>
+<text x="76" y="148" font-size="21" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#1f4f9c">screens/</text>
+<text x="76" y="172" font-size="15" fill="#4a5560">layout and interaction — no SQL anywhere in here</text>
+<rect x="76" y="186" width="61" height="36" rx="8" fill="#ffffff" stroke="#b9d0f2" stroke-width="1.3"/>
+<text x="107" y="210" text-anchor="middle" font-family="ui-sans-serif, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="14.5" fill="#1f4f9c">Home</text>
+<rect x="149" y="186" width="70" height="36" rx="8" fill="#ffffff" stroke="#b9d0f2" stroke-width="1.3"/>
+<text x="184" y="210" text-anchor="middle" font-family="ui-sans-serif, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="14.5" fill="#1f4f9c">Entry</text>
+<rect x="231" y="186" width="132" height="36" rx="8" fill="#ffffff" stroke="#b9d0f2" stroke-width="1.3"/>
+<text x="297" y="210" text-anchor="middle" font-family="ui-sans-serif, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="14.5" fill="#1f4f9c">Month detail</text>
+<rect x="375" y="186" width="96" height="36" rx="8" fill="#ffffff" stroke="#b9d0f2" stroke-width="1.3"/>
+<text x="423" y="210" text-anchor="middle" font-family="ui-sans-serif, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="14.5" fill="#1f4f9c">Settings</text>
+<path d="M170 260 V318" stroke="#4a5560" stroke-width="2" marker-end="url(#a)"/>
+<text x="188" y="295" font-size="15" fill="#4a5560">calls plain functions</text>
+<rect x="50" y="318" width="800" height="150" rx="12" fill="#eaf7f0" stroke="#a9dcc2" stroke-width="1.5"/>
+<text x="76" y="356" font-size="21" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#14683f">data/</text>
+<text x="76" y="380" font-size="15" fill="#4a5560">turns questions into finished results</text>
+<rect x="76" y="394" width="112" height="36" rx="8" fill="#ffffff" stroke="#a9dcc2" stroke-width="1.3"/>
+<text x="132" y="418" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" fill="#14683f">getMonth()</text>
+<rect x="200" y="394" width="121" height="36" rx="8" fill="#ffffff" stroke="#a9dcc2" stroke-width="1.3"/>
+<text x="260" y="418" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" fill="#14683f">saveEntry()</text>
+<rect x="333" y="394" width="121" height="36" rx="8" fill="#ffffff" stroke="#a9dcc2" stroke-width="1.3"/>
+<text x="393" y="418" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" fill="#14683f">getTotals()</text>
+<rect x="465" y="394" width="121" height="36" rx="8" fill="#ffffff" stroke="#a9dcc2" stroke-width="1.3"/>
+<text x="526" y="418" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" fill="#14683f">exportCsv()</text>
+<path d="M170 468 V526" stroke="#4a5560" stroke-width="2" marker-end="url(#a)"/>
+<text x="188" y="503" font-size="15" fill="#4a5560">the only layer that queries the database</text>
+<rect x="50" y="526" width="800" height="150" rx="12" fill="#f3eefb" stroke="#cfbdec" stroke-width="1.5"/>
+<text x="76" y="564" font-size="21" font-weight="700" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" fill="#5b3aa0">db/</text>
+<text x="76" y="588" font-size="15" fill="#4a5560">SQLite on the device — tables, migrations, transactions</text>
+<rect x="76" y="602" width="121" height="36" rx="8" fill="#ffffff" stroke="#cfbdec" stroke-width="1.3"/>
+<text x="136" y="626" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" fill="#5b3aa0">expo-sqlite</text>
+<rect x="209" y="602" width="78" height="36" rx="8" fill="#ffffff" stroke="#cfbdec" stroke-width="1.3"/>
+<text x="247" y="626" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" fill="#5b3aa0">schema</text>
+<rect x="298" y="602" width="112" height="36" rx="8" fill="#ffffff" stroke="#cfbdec" stroke-width="1.3"/>
+<text x="354" y="626" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14.5" fill="#5b3aa0">migrations</text>
+</svg>
