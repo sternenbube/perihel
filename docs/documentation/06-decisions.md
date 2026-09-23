@@ -35,6 +35,24 @@ I have built an app in Flutter before, so the decision is not made out of unfami
 - Database changes need migrations. If a later version adds a column, existing entries must survive the update (R4). This has to be handled from the first version, not added afterwards.
 - The CSV export (V2-8) becomes straightforward, because the data already lives in tables.
 
+### Decision 3: Styling
+
+**Options considered:** React Native's built-in `StyleSheet` with a small theme file, NativeWind v4 (Tailwind v3), NativeWind v5 (Tailwind v4), and Uniwind (Tailwind v4).
+
+**Rejected early:** NativeWind v5 is a pre-release. Uniwind's support for Expo SDK 57 could not be confirmed, and part of it sits behind a paid tier. Neither should carry a project with fixed dates.
+
+**Main comparison:** plain `StyleSheet` against NativeWind v4. `StyleSheet` needs no setup and nothing extra between the code and the screen. NativeWind brings Tailwind to React Native: class names are turned into React Native styles when the code is built. I already know Tailwind from building Next.js applications and am more comfortable with it than with writing styles by hand.
+
+The deciding point is what this project is about. It is not about learning how to style, it is about building a clean, consistent app efficiently. Tailwind gives a fixed scale of spacing, sizes and colours, so most styling decisions are already made, and the look stays consistent without designing every component from scratch. That leaves the time for what matters here: the data, the entry flow and the chart.
+
+**Decision:** NativeWind v4.2.7 with Tailwind v3, the version that states support for Expo SDK 57.
+
+**Consequences:**
+
+- The setup adds four configuration files and changes how the code is built. It was done on the empty project, so any problem could only come from the setup itself.
+- React Native's styling rules still apply underneath: flexbox with a vertical default direction, no inherited styles, sizes as plain numbers. When a class seems to have no effect, the reason is usually one of these.
+- Tailwind v3 syntax instead of v4. A later switch to NativeWind v5 is possible once it is stable, but it is not planned.
+
 ---
 
 [← Out of scope](05-out-of-scope.md)  ·  [Architecture and data model →](07-architecture.md)  ·  [Overview](../../README.md)

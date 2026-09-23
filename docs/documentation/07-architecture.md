@@ -31,7 +31,7 @@ The alternative would be a table with one column per setting and exactly one row
 
 **Decision:** the key and value version is used. Adding a setting stays a one-line change. To keep the type safety that TypeScript was chosen for, each setting gets its own small function in the data layer that converts and checks the value, so the conversion happens in exactly one place and the screens receive proper types.
 
-### Decision 3: Numbers are stored without decimals
+### Decision 4: Numbers are stored without decimals
 
 Amounts are stored as whole numbers. The user cannot enter decimals at all — the app rounds to the nearest whole number.
 
@@ -41,13 +41,13 @@ What is gained: cleaner and shorter numbers on screen, and no conversion between
 
 Consequence: if a CSV file is imported with decimal values, the app rounds them instead of rejecting the file.
 
-### Decision 4: A missing month has no entries at all
+### Decision 5: A missing month has no entries at all
 
 If a month was not entered, no entry rows exist for it. A missing entry is never stored as the number 0.
 
 "I did not enter anything in October" and "this account was empty in October" are two different facts and must never be mixed up. The dotted line in V2-6 depends on telling them apart, and a total that treated missing entries as zero would show a drop in net worth that never happened.
 
-### Decision 5: Accounts are deactivated, not deleted
+### Decision 6: Accounts are deactivated, not deleted
 
 An account has an `is_active` flag. Deactivated accounts disappear from the entry flow and from the current view, but they appear automatically again when the user looks at a period in which that account had numbers.
 
@@ -56,7 +56,7 @@ Real deletion exists, but behaves differently depending on the situation:
 - An account without any entries is deleted directly. It was created by mistake and there is nothing to lose.
 - An account with history can only be deleted after a clear warning that all of its numbers are permanently gone and that past totals will change because of it.
 
-### Decision 6: The category belongs to the account, not to the entry
+### Decision 7: The category belongs to the account, not to the entry
 
 If an account is moved to another category, its whole history moves with it. Past views are therefore reorganised as well.
 
@@ -64,7 +64,7 @@ The alternative would be to store the category with every single entry. That wou
 
 The effect is limited and intended: the overall total of a past month never changes, only the distribution across categories.
 
-### Decision 7: A month is its own table
+### Decision 8: A month is its own table
 
 The entries could also carry the month directly — `entry(year_month, account_id, value)` — and the snapshot table could be dropped. That would be one table and one join less. The question behind it is whether a month is a thing of its own in this app, or only a label on an entry. Three reasons say it is a thing of its own.
 

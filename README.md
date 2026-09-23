@@ -28,7 +28,7 @@ reached once per orbit, on schedule, every time. That is what this app is: one m
 | [3. Goals](docs/documentation/03-goals.md)                                     | What has to be true for each version          |
 | [4. Requirements](docs/documentation/04-requirements.md)                       | How well it has to do those things            |
 | [5. Out of scope](docs/documentation/05-out-of-scope.md)                       | What is deliberately not being built          |
-| [6. Options and decisions](docs/documentation/06-decisions.md)                 | Framework, storage, and why                   |
+| [6. Options and decisions](docs/documentation/06-decisions.md)                 | Framework, storage, styling, and why          |
 | [7. Architecture and data model](docs/documentation/07-architecture.md)        | Tables, rules, layering                       |
 | [8. Screens and user flow](docs/documentation/08-screens.md)                   | Screens, navigation, mockups                  |
 | [9. Implementation notes](docs/documentation/09-implementation-notes.md)       | What changed during the build                 |
