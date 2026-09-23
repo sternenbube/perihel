@@ -50,7 +50,7 @@ Two things stand out from this mapping. The tasks the user performs regularly �
 
 ### Navigation
 
-![Screens and navigation](assets/screens.svg)
+![Screens and navigation](../assets/screens.svg)
 
 ### Home
 
@@ -84,11 +84,11 @@ Onboarding and entry feel similar, but they do opposite things: onboarding creat
 
 ### Mockups
 
-![Home screen](assets/home.png)
+![Home screen](../assets/home.png)
 
-![Entry screen](assets/entry.png)
+![Entry screen](../assets/entry.png)
 
-![Month detail screen](assets/month-detail.png)
+![Month detail screen](../assets/month-detail.png)
 
 The mockups were made with Claude Design. The text of this chapter served as the brief — the screens, their states and what belongs on each were already written down, so the tool only had to turn a description into a layout. Afterwards the screens were adjusted directly in the editor until they felt right.
 
@@ -105,4 +105,4 @@ The mockups show how the app should look, not how it will be built. Colours in p
 
 ---
 
-[← Architecture and data model](07-architecture.md)  ·  [Implementation notes →](09-implementation-notes.md)  ·  [Overview](../README.md)
+[← Architecture and data model](07-architecture.md)  ·  [Implementation notes →](09-implementation-notes.md)  ·  [Overview](../../README.md)

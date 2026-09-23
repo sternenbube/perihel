@@ -37,4 +37,4 @@ I have built an app in Flutter before, so the decision is not made out of unfami
 
 ---
 
-[← Out of scope](05-out-of-scope.md)  ·  [Architecture and data model →](07-architecture.md)  ·  [Overview](../README.md)
+[← Out of scope](05-out-of-scope.md)  ·  [Architecture and data model →](07-architecture.md)  ·  [Overview](../../README.md)

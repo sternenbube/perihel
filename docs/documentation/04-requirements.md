@@ -19,4 +19,4 @@ R1 is the reason for V1-5. The real time is spent logging into the bank accounts
 
 ---
 
-[← Goals](03-goals.md)  ·  [Out of scope →](05-out-of-scope.md)  ·  [Overview](../README.md)
+[← Goals](03-goals.md)  ·  [Out of scope →](05-out-of-scope.md)  ·  [Overview](../../README.md)

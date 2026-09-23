@@ -3,7 +3,7 @@
 
 ### Data model
 
-![Data model](assets/data-model.svg)
+![Data model](../assets/data-model.svg)
 
 | Table | Columns | Meaning |
 | ----- | ------- | ------- |
@@ -80,7 +80,7 @@ The cost is one join and one additional table, which is irrelevant at this data 
 
 ### Layers
 
-![Application layers](assets/layers.svg)
+![Application layers](../assets/layers.svg)
 
 The rule: only the data layer talks to the database. Screens never contain SQL, they call functions and receive finished results.
 
@@ -92,4 +92,4 @@ The cost is one extra step: a new number on screen needs a function in the data 
 
 ---
 
-[← Options and decisions](06-decisions.md)  ·  [Screens and user flow →](08-screens.md)  ·  [Overview](../README.md)
+[← Options and decisions](06-decisions.md)  ·  [Screens and user flow →](08-screens.md)  ·  [Overview](../../README.md)

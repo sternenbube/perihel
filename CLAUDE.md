@@ -39,7 +39,7 @@ lifecycle — explain what it is and why it works that way before applying it. A
 explain back is a fix that did not teach anything.
 
 **Offer options, let him choose.** Where there is more than one reasonable path, name two or
-three with their trade-offs and let him decide. Record the decision in `docs/06-decisions.md`
+three with their trade-offs and let him decide. Record the decision in `docs/documentation/06-decisions.md`
 when it is significant.
 
 **Challenge him.** If his suggestion has a weakness, say which and why, and let him correct it
@@ -61,16 +61,16 @@ At the end of a session, say in one line where things stand and what the next st
 
 ## Scope discipline
 
-Only V1 goals are being built right now (`docs/03-goals.md`). If an idea belongs to V2 or V3,
-say so and note it — do not build it early. Things in `docs/05-out-of-scope.md` stay out.
+Only V1 goals are being built right now (`docs/documentation/03-goals.md`). If an idea belongs to V2 or V3,
+say so and note it — do not build it early. Things in `docs/documentation/05-out-of-scope.md` stay out.
 
 ## Conventions that are already decided
 
 These come from the concept phase. Do not quietly change them; if one turns out to be wrong,
-say so and record the change in `docs/09-implementation-notes.md`.
+say so and record the change in `docs/documentation/09-implementation-notes.md`.
 
 - **Data layer**: only `db/` and `data/` contain SQL. Screens call plain functions and never
-  query the database directly. (`docs/07-architecture.md`)
+  query the database directly. (`docs/documentation/07-architecture.md`)
 - **Money is whole numbers.** No decimals anywhere, not in the database, not in the input.
 - **A missing month has no rows.** "Not entered" and "zero" are different facts.
 - **Accounts are deactivated, never deleted** while they have history.
@@ -80,5 +80,5 @@ say so and record the change in `docs/09-implementation-notes.md`.
 
 ## Documenting as we go
 
-During the build, note in `docs/09-implementation-notes.md` only what _changed_: a decision that
+During the build, note in `docs/documentation/09-implementation-notes.md` only what _changed_: a decision that
 turned out differently, a surprise, a thing worth remembering. Not a diary of what was built.

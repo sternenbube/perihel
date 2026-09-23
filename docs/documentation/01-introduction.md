@@ -27,4 +27,4 @@ This version covers what I consider the most important basics. Whether the app l
 
 ---
 
-[← Overview](../README.md)  ·  [Current situation and problem →](02-current-situation.md)  ·  [Overview](../README.md)
+[Current situation and problem →](02-current-situation.md)  ·  [Overview](../../README.md)

@@ -25,4 +25,4 @@ If an investment account grows by 2000, the app cannot know whether the user pai
 
 ---
 
-[← Requirements](04-requirements.md)  ·  [Options and decisions →](06-decisions.md)  ·  [Overview](../README.md)
+[← Requirements](04-requirements.md)  ·  [Options and decisions →](06-decisions.md)  ·  [Overview](../../README.md)

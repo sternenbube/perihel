@@ -29,4 +29,4 @@ This product is not meant to reinvent the wheel, and it is not meant to be the b
 
 ---
 
-[← Introduction](01-introduction.md)  ·  [Goals →](03-goals.md)  ·  [Overview](../README.md)
+[← Introduction](01-introduction.md)  ·  [Goals →](03-goals.md)  ·  [Overview](../../README.md)
