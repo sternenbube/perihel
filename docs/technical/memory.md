@@ -1,7 +1,7 @@
 # Session memory
 
 Where the build stands between sessions, so work can continue on any computer.
-Last updated: 30.09.2026.
+Last updated: 02.10.2026.
 
 ## Where things stand
 
@@ -12,6 +12,11 @@ Last updated: 30.09.2026.
   Recorded as Decision 3 in `06-decisions.md`; the decisions in chapter 7 are now 4–8.
 - The app runs in Expo Go. A development build is still needed before V1 is done (V1-1),
   earlier if the chart library needs native code.
+- **Step 2a half done:** Drizzle ORM 0.45 (stable, not the 1.0 RC) with `expo-sqlite`. Config in
+  `drizzle.config.ts`, `babel.config.js` (inline-import for `.sql`), `metro.config.js` (`sql`
+  extension). Schema in `src/db/schema.ts`, migration 1 generated as
+  `src/db/migrations/0000_initial_schema.sql`. **Not committed yet.** The migration has never
+  run, so it may still be edited (delete the folder and regenerate).
 - The data layer lives under `src/` (`src/db/`, `src/data/`). Not documented on purpose: the rule
   "only the data layer contains SQL" is unchanged.
 
@@ -45,6 +50,19 @@ database from the start. The screens never change when the dummy data is replace
 - No central `paths.ts`: the file tree is the route definition and typed routes catch broken
   links. A `monthHref()` helper may make sense once a second screen links to months.
 
+## Decided in step 2
+
+- Drizzle instead of hand-written `user_version` migrations, for types derived from the schema.
+  Prisma for Expo is still Early Access and stalled, so not an option.
+- Database names in snake_case (SQL convention), TypeScript keys in camelCase.
+- `sort_order` dropped for V1: reordering is V3-7, V1 sorts by `id`. Added by a migration later.
+- Snapshot status (V1-5) comes as migration 2 when step 5 is built (B2), not in migration 1.
+- All references use `onDelete: "restrict"`: deleting history always takes deliberate code.
+  Deleting a category will ask the user to move or delete its accounts (Decision 6 applies).
+- `year_month` has a CHECK (four-digit year, month 01–12) plus one tested function that turns a
+  date into `year_month`. String normalization waits for the CSV import (V2-9).
+- Defaults only where a value is genuinely correct (`is_active = true`), never as a safety net.
+
 ## Testing
 
 I want to learn testing, I have done too little of it. Set it up when the first pure data-layer
@@ -53,12 +71,25 @@ my list of awkward inputs is the test.
 
 ## Next step
 
-Step 2: open the database, first migration with the five tables, then the chart test.
-The "middle path" for dummy data is still unconfirmed.
+1. Commit the schema, migration, config and the docs restructure.
+2. Rest of 2a: database module in `src/db/` (open the database, `PRAGMA foreign_keys = ON`,
+   create the Drizzle object), `useMigrations` in `_layout.tsx` with loading and error state,
+   test with two app starts.
+3. Doc drafts: the Drizzle decision for `06-decisions.md`; `sort_order` deferred and status as
+   migration 2 for `09-implementation-notes.md`.
+4. Learning docs in `docs/learning/`, one file per topic (see below).
+5. Then 2b: the chart test. The "middle path" for dummy data is still unconfirmed.
+
+## Learning docs
+
+One file per topic, not per session. Process: I name the topic, Claude gives a few keywords,
+I write down everything I remember, Claude corrects it and shows a draft in the chat, I confirm,
+then Claude writes the file. Candidate topics so far: navigation with Expo Router, React Native
+basics, local database and migrations, schema design, engineering judgment, tooling.
 
 ## How Claude works with me
 
-These add to `CLAUDE.md`. Since 30.09.2026 the core rule is: Claude gives a short theory
+These add to `CLAUDE.md`, which loads this file automatically. Since 30.09.2026 the core rule is: Claude gives a short theory
 introduction in the chat, I implement, Claude reviews on request. I run all commands.
 
 - **Docs:** always show a draft in the chat and say where it goes before editing any

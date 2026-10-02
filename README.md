@@ -21,28 +21,37 @@ reached once per orbit, on schedule, every time. That is what this app is: one m
 
 ## Documentation
 
-| Chapter                                                                        | What it answers                               |
-| ------------------------------------------------------------------------------ | --------------------------------------------- |
-| [1. Introduction](docs/documentation/01-introduction.md)                       | What the app is, why it exists, who it is for |
-| [2. Current situation and problem](docs/documentation/02-current-situation.md) | Why it needs to exist at all                  |
-| [3. Goals](docs/documentation/03-goals.md)                                     | What has to be true for each version          |
-| [4. Requirements](docs/documentation/04-requirements.md)                       | How well it has to do those things            |
-| [5. Out of scope](docs/documentation/05-out-of-scope.md)                       | What is deliberately not being built          |
-| [6. Options and decisions](docs/documentation/06-decisions.md)                 | Framework, storage, styling, and why          |
-| [7. Architecture and data model](docs/documentation/07-architecture.md)        | Tables, rules, layering                       |
-| [8. Screens and user flow](docs/documentation/08-screens.md)                   | Screens, navigation, mockups                  |
-| [9. Implementation notes](docs/documentation/09-implementation-notes.md)       | What changed during the build                 |
-| [10. Test cases and results](docs/documentation/10-test-cases.md)              | One test per goal                             |
-| [11. Evaluation and self-reflection](docs/documentation/11-evaluation.md)      | What worked, what did not                     |
+### Process
 
-### Technical files
+| Chapter                                                                  | What it answers                               |
+| ------------------------------------------------------------------------ | --------------------------------------------- |
+| [1. Introduction](docs/process/01-introduction.md)                       | What the app is, why it exists, who it is for |
+| [2. Current situation and problem](docs/process/02-current-situation.md) | Why it needs to exist at all                  |
+| [3. Goals](docs/process/03-goals.md)                                     | What has to be true for each version          |
+| [4. Requirements](docs/process/04-requirements.md)                       | How well it has to do those things            |
+| [5. Out of scope](docs/process/05-out-of-scope.md)                       | What is deliberately not being built          |
+| [6. Options and decisions](docs/process/06-decisions.md)                 | Framework, storage, styling, and why          |
+| [7. Architecture and data model](docs/process/07-architecture.md)        | Tables, rules, layering                       |
+| [8. Screens and user flow](docs/process/08-screens.md)                   | Screens, navigation, mockups                  |
+| [9. Implementation notes](docs/process/09-implementation-notes.md)       | What changed during the build                 |
+| [10. Test cases and results](docs/process/10-test-cases.md)              | One test per goal                             |
+| [11. Evaluation and self-reflection](docs/process/11-evaluation.md)      | What worked, what did not                     |
 
-| File                                        | What it is                                                       |
-| ------------------------------------------- | ---------------------------------------------------------------- |
-| [setup.md](docs/setup.md)                   | Tools, versions and steps to set up the project on a new machine |
-| [CLAUDE.md](CLAUDE.md)                      | How Claude works on this project                                 |
-| [AGENTS.md](AGENTS.md)                      | Instructions for coding agents: use the Expo SDK 57 docs         |
-| [DEFAULT_README.md](docs/DEFAULT_README.md) | The README that `create-expo-app` generated, kept for reference  |
+### Learnings
+
+| Topic                                         | What it covers                                                   |
+| --------------------------------------------- | ---------------------------------------------------------------- |
+| [Setup](docs/learnings/setup.md)              | Tools, versions and steps to set up the project on a new machine |
+| [Commit messages](docs/learnings/commits.png) | Commit message convention: types, subject rules, goal IDs        |
+
+### Technical
+
+| File                                                  | What it is                                                       |
+| ----------------------------------------------------- | ---------------------------------------------------------------- |
+| [memory.md](docs/technical/memory.md)                 | Where the build stands between sessions, and the next step       |
+| [CLAUDE.md](CLAUDE.md)                                | How Claude works on this project                                 |
+| [AGENTS.md](AGENTS.md)                                | Instructions for coding agents: use the Expo SDK 57 docs         |
+| [DEFAULT_README.md](docs/technical/DEFAULT_README.md) | The README that `create-expo-app` generated, kept for reference  |
 
 ---
 
