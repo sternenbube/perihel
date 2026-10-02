@@ -42,7 +42,7 @@ reached once per orbit, on schedule, every time. That is what this app is: one m
 | Topic                                         | What it covers                                                   |
 | --------------------------------------------- | ---------------------------------------------------------------- |
 | [Setup](docs/learnings/setup.md)              | Tools, versions and steps to set up the project on a new machine |
-| [Commit messages](docs/learnings/commits.png) | Commit message convention: types, subject rules, goal IDs        |
+| [Commit messages](docs/learnings/commits.md)  | Commit message convention: types, subject rules, goal IDs        |
 
 ### Technical
 
