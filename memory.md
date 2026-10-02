@@ -45,6 +45,12 @@ database from the start. The screens never change when the dummy data is replace
 - No central `paths.ts`: the file tree is the route definition and typed routes catch broken
   links. A `monthHref()` helper may make sense once a second screen links to months.
 
+## Testing
+
+I want to learn testing, I have done too little of it. Set it up when the first pure data-layer
+function exists (the year_month function, step 2/3). Write the tests **before** the function:
+my list of awkward inputs is the test.
+
 ## Next step
 
 Step 2: open the database, first migration with the five tables, then the chart test.
