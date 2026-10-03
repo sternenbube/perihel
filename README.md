@@ -46,6 +46,7 @@ Concepts and best practices, independent of a specific setup.
 | [Schema design and constraints](docs/learnings/schema-design.md) | NULL vs no row, constraints, restrict vs cascade, defaults, SQLite quirks |
 | [Local database and migrations](docs/learnings/migrations.md)    | Migrations on the phone, the golden rule, transactions, why Drizzle       |
 | [Styling with NativeWind](docs/learnings/styling.md)             | How className becomes style, React Native's layout rules, why NativeWind  |
+| [Engineering judgment](docs/learnings/engineering-judgment.md)   | Where to draw the line, loud bugs, postponing safely, changing decisions  |
 
 ### Guides
 

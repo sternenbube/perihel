@@ -77,7 +77,7 @@ my list of awkward inputs is the test.
    test with two app starts.
 3. Doc drafts: the Drizzle decision for `06-decisions.md`; `sort_order` deferred and status as
    migration 2 for `09-implementation-notes.md`.
-4. Learning docs: one topic left, engineering judgment (see below).
+4. Learning docs: all four written. Fill in step 7 of `docs/guides/database-setup.md` when 2a is done.
 5. Then 2b: the chart test. The "middle path" for dummy data is still unconfirmed.
 
 ## Docs: learnings and guides
@@ -89,8 +89,8 @@ my list of awkward inputs is the test.
 - Commits use `feat:` from now on, not `feature:` (see `docs/guides/commits.md`).
 
 Learning topics: **schema design and constraints (done)**, **local database and migrations
-(done, with the guide `database-setup.md`)**, **styling with NativeWind (done, with the guide `nativewind-setup.md`)**, engineering
-judgment. Nothing else. `database-setup.md` step 7 is a to-do: fill it in once the database module and
+(done, with the guide `database-setup.md`)**, **styling with NativeWind (done, with the guide `nativewind-setup.md`)**, **engineering
+judgment (done)**. All four written; new topics only when I name them. `database-setup.md` step 7 is a to-do: fill it in once the database module and
 `useMigrations` are built.
 
 Process: I name the topic, Claude gives a few keywords, I write down everything I remember,
