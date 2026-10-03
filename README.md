@@ -44,15 +44,17 @@ Concepts and best practices, independent of a specific setup.
 | Topic                                                            | What it covers                                                            |
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | [Schema design and constraints](docs/learnings/schema-design.md) | NULL vs no row, constraints, restrict vs cascade, defaults, SQLite quirks |
+| [Local database and migrations](docs/learnings/migrations.md)    | Migrations on the phone, the golden rule, transactions, why Drizzle       |
 
 ### Guides
 
 Step-by-step instructions for things to repeat.
 
-| Guide                                     | What it covers                                                   |
-| ----------------------------------------- | ---------------------------------------------------------------- |
-| [Setup](docs/guides/setup.md)             | Tools, versions and steps to set up the project on a new machine |
-| [Commit messages](docs/guides/commits.md) | Commit message convention: types, subject rules, goal IDs        |
+| Guide                                           | What it covers                                                   |
+| ----------------------------------------------- | ---------------------------------------------------------------- |
+| [Setup](docs/guides/setup.md)                   | Tools, versions and steps to set up the project on a new machine |
+| [Commit messages](docs/guides/commits.md)       | Commit message convention: types, subject rules, goal IDs        |
+| [Database setup](docs/guides/database-setup.md) | Drizzle with expo-sqlite: install, config, schema, migrations    |
 
 ### Technical
 
