@@ -39,10 +39,20 @@ reached once per orbit, on schedule, every time. That is what this app is: one m
 
 ### Learnings
 
-| Topic                                         | What it covers                                                   |
-| --------------------------------------------- | ---------------------------------------------------------------- |
-| [Setup](docs/learnings/setup.md)              | Tools, versions and steps to set up the project on a new machine |
-| [Commit messages](docs/learnings/commits.md)  | Commit message convention: types, subject rules, goal IDs        |
+Concepts and best practices, independent of a specific setup.
+
+| Topic                                                            | What it covers                                                            |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| [Schema design and constraints](docs/learnings/schema-design.md) | NULL vs no row, constraints, restrict vs cascade, defaults, SQLite quirks |
+
+### Guides
+
+Step-by-step instructions for things to repeat.
+
+| Guide                                     | What it covers                                                   |
+| ----------------------------------------- | ---------------------------------------------------------------- |
+| [Setup](docs/guides/setup.md)             | Tools, versions and steps to set up the project on a new machine |
+| [Commit messages](docs/guides/commits.md) | Commit message convention: types, subject rules, goal IDs        |
 
 ### Technical
 

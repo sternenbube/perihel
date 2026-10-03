@@ -1,7 +1,7 @@
 # Session memory
 
 Where the build stands between sessions, so work can continue on any computer.
-Last updated: 02.10.2026.
+Last updated: 03.10.2026.
 
 ## Where things stand
 
@@ -77,19 +77,23 @@ my list of awkward inputs is the test.
    test with two app starts.
 3. Doc drafts: the Drizzle decision for `06-decisions.md`; `sort_order` deferred and status as
    migration 2 for `09-implementation-notes.md`.
-4. Learning docs in `docs/learnings/`, one file per topic (see below).
+4. Learning docs: three topics left (see below).
 5. Then 2b: the chart test. The "middle path" for dummy data is still unconfirmed.
 
-## Learning docs
+## Docs: learnings and guides
 
-In `docs/learnings/`, written in the style of `setup.md`: short dated intro, tables, bold
-numbered steps, prose that explains why. `setup.md` and `commits.md` exist already.
-Commits use `feat:` from now on, not `feature:` (see `commits.md`).
+- `docs/learnings/`: concepts and best practices, not tied to a specific setup.
+- `docs/guides/`: step-by-step instructions for things to repeat (`setup.md`, `commits.md`).
+- Both in the style of `setup.md`: short dated intro, tables, bold numbered steps, prose that
+  explains why. Both have their own table in the README.
+- Commits use `feat:` from now on, not `feature:` (see `docs/guides/commits.md`).
 
-One file per topic, not per session. Process: I name the topic, Claude gives a few keywords,
-I write down everything I remember, Claude corrects it and shows a draft in the chat, I confirm,
-then Claude writes the file. Candidate topics so far: navigation with Expo Router, React Native
-basics, local database and migrations, schema design, engineering judgment, tooling.
+Learning topics: **schema design and constraints (done)**, local database and migrations,
+styling with NativeWind, engineering judgment. Nothing else.
+
+Process: I name the topic, Claude gives a few keywords, I write down everything I remember,
+Claude corrects it and shows a draft in the chat, I confirm, then Claude writes the file and
+adds it to the README.
 
 ## How Claude works with me
 
