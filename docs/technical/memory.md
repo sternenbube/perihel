@@ -1,34 +1,30 @@
 # Session memory
 
 Where the build stands between sessions, so work can continue on any computer.
-Loaded automatically through `CLAUDE.md`. Last updated: 03.10.2026.
+Loaded automatically through `CLAUDE.md`. Last updated: 04.10.2026.
 
 ## Where we left off
 
-Everything is committed (last commit `660e960 docs: Engineering judgment`), working tree clean.
+**Step 2a is done:** `src/db/client.ts` opens `perihel.db` once (module singleton), runs
+`PRAGMA foreign_keys = ON` and exports the Drizzle `db`. `src/app/_layout.tsx` runs
+`useMigrations`: error view first, `null` while running, the `Stack` on success. Tested with two
+starts: five tables plus `__drizzle_migrations`. The guide `docs/guides/database-setup.md` is
+complete (steps 7–9). Commit: `feat(db): open database and run migrations at startup` — check
+with `git log` that it was made.
 
-**Next session starts with the rest of step 2a — opening the database and running migration 1:**
+**Migration 1 has now run on my phone.** Changing it means clearing Expo Go's data first; after
+the first release, never.
 
-1. **Framing first** (core rule step 1): ask me how I would approach it before explaining.
-2. **Database module in `src/db/`** (file name my choice, e.g. `client.ts`):
-   open the database with `expo-sqlite`, run `PRAGMA foreign_keys = ON` (SQLite ignores
-   `REFERENCES` without it, and it must run every time the database is opened), create the
-   Drizzle object with `drizzle-orm/expo-sqlite`, export it. Data functions in `src/data/`
-   will import it — screens never touch it.
-3. **`useMigrations`** (from `drizzle-orm/expo-sqlite/migrator`) in `src/app/_layout.tsx`, with the
-   bundle from `src/db/migrations/migrations.js`. Show a loading state while it runs and an error
-   state if it fails; render the `Stack` only on success.
-4. **Test:** start the app twice. First start runs migration 1, second start runs nothing. Verify
-   the five tables exist (temporary log, removed afterwards).
-5. **Fill in step 7** of `docs/guides/database-setup.md` (currently marked as to-do).
-6. **Doc drafts still owed** (show in chat first): the Drizzle decision for
+**Next:**
+
+1. **Doc drafts still owed** (show in chat first): the Drizzle decision for
    `docs/process/06-decisions.md` (as Decision 9 or wherever it fits); for
    `docs/process/09-implementation-notes.md` (still "To be written"): `sort_order` deferred to
    V3-7, snapshot status coming as migration 2, Drizzle replacing the planned hand-written
    migrations.
-
-Then **2b: the chart test** with dummy data, and decide on the chart library and whether a
-development build is needed now.
+2. **2b: the chart test** with dummy data — decide on the chart library and whether a development
+   build is needed now. Framing first: ask me how I would approach it.
+3. Before step 3: confirm or reject the "middle path" (see Build order).
 
 **Version caution:** Drizzle docs are written for the 1.0 RC; we use stable 0.45. Check imports
 and APIs against the installed package (`node_modules/drizzle-orm/expo-sqlite/`) before advising.
@@ -40,12 +36,10 @@ Expo docs: always the SDK 57 versioned pages.
   `month/[month].tsx` (reads the param, header via `Stack.Title`), `settings.tsx` (one link to
   Manage), `manage.tsx`. Each screen has its own background colour for now.
 - **Styling:** NativeWind 4.2.7 with Tailwind v3, works on the phone. Decision 3.
-- **Step 2a half done:** Drizzle 0.45 + drizzle-kit 0.31 + `expo-sqlite` 57 installed and
-  configured (`drizzle.config.ts`, Babel inline-import, Metro `sql` extension).
-  Schema in `src/db/schema.ts`, migration 1 in `src/db/migrations/0000_initial_schema.sql`.
-  **Migration 1 has never run anywhere** — it may still be changed (delete the folder, regenerate
-  with `--name=initial_schema`). Once it runs on my phone, changing it means clearing Expo Go's
-  data; after the first release, never.
+- **Step 2a done:** Drizzle 0.45 + drizzle-kit 0.31 + `expo-sqlite` 57, configured
+  (`drizzle.config.ts`, Babel inline-import, Metro `sql` extension). Schema in
+  `src/db/schema.ts`, migration 1 in `src/db/migrations/0000_initial_schema.sql`, run at startup
+  through `useMigrations`. The database file lives in the app's sandbox on the phone.
 - The app runs in Expo Go. A development build is needed before V1 is done (V1-1), earlier if the
   chart library needs native code.
 
@@ -68,7 +62,7 @@ same account and month. Correcting a value therefore needs an update (or upsert)
 ## Build order
 
 1. ~~Empty screens and navigation~~ done
-2. Open the database, migration 1 (**in progress**) → then the chart test (2b)
+2. ~~Open the database, migration 1~~ done → **next: the chart test (2b)**
 3. Data functions for categories and accounts, Manage screen (V1-2) — first real queries
 4. Entry flow, one account at a time (V1-3, V1-4)
 5. Resume an interrupted entry (V1-5) — adds the snapshot status as migration 2
@@ -116,7 +110,7 @@ single-digit months.
 - `docs/learnings/`: concepts and best practices. Done: schema design, migrations, styling,
   engineering judgment. New topics only when I name them.
 - `docs/guides/`: step-by-step instructions to repeat. Done: setup, commits, database setup
-  (step 7 to-do), NativeWind setup.
+  (complete), NativeWind setup.
 - `docs/technical/`: this file, `DEFAULT_README.md`.
 - Style for learnings and guides: like `docs/guides/setup.md` — short dated intro, tables, bold
   numbered steps, prose that explains why. Every new file gets a row in its README table.

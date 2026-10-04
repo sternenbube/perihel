@@ -78,9 +78,40 @@ the name. Never edit a migration that has already run on a phone — see
 **6. Read the generated SQL** before committing. Check that every constraint arrived: `NOT NULL`,
 `UNIQUE`, `CHECK`, `ON DELETE restrict`.
 
-**7. Open the database and run the migrations.** _To be completed in step 2a:_ the database module
-in `src/db/` (open the database, `PRAGMA foreign_keys = ON` — SQLite ignores foreign keys without
-it — and create the Drizzle object), and `useMigrations` in `src/app/_layout.tsx`.
+**7. Open the database once** in `src/db/client.ts`:
+
+```ts
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import { openDatabaseSync } from "expo-sqlite";
+
+const sqlite = openDatabaseSync("perihel.db");
+sqlite.execSync("PRAGMA foreign_keys = ON");
+export const db = drizzle(sqlite);
+```
+
+A module runs once, on its first import, so the whole app shares this one connection. The PRAGMA
+must run every time the database is opened — without it SQLite silently ignores `REFERENCES`.
+The file lives in the app's private storage on the phone, not in the project; in Expo Go inside
+Expo Go's storage.
+
+**8. Run the migrations at startup** in `src/app/_layout.tsx`:
+
+```tsx
+const { success, error } = useMigrations(db, migrations);
+
+if (error) return <ErrorView message={error.message} />;
+if (!success) return null;
+return <Stack>…</Stack>;
+```
+
+`useMigrations` comes from `drizzle-orm/expo-sqlite/migrator`, `migrations` from
+`src/db/migrations/migrations.js`. Error is checked first, because a failed migration also leaves
+`success` false. No screen renders before the migrations are done, so no screen can query a
+table that does not exist yet.
+
+**9. Test with two starts.** Log `SELECT name FROM sqlite_master WHERE type = 'table'` once
+`success` is true: the first start shows the five tables plus `__drizzle_migrations`, Drizzle's
+tracking table. Reload — the same list, no migration runs again. Remove the log afterwards.
 
 ## Changing the schema later
 
