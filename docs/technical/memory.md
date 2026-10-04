@@ -1,112 +1,143 @@
 # Session memory
 
 Where the build stands between sessions, so work can continue on any computer.
-Last updated: 03.10.2026.
+Loaded automatically through `CLAUDE.md`. Last updated: 03.10.2026.
+
+## Where we left off
+
+Everything is committed (last commit `660e960 docs: Engineering judgment`), working tree clean.
+
+**Next session starts with the rest of step 2a — opening the database and running migration 1:**
+
+1. **Framing first** (core rule step 1): ask me how I would approach it before explaining.
+2. **Database module in `src/db/`** (file name my choice, e.g. `client.ts`):
+   open the database with `expo-sqlite`, run `PRAGMA foreign_keys = ON` (SQLite ignores
+   `REFERENCES` without it, and it must run every time the database is opened), create the
+   Drizzle object with `drizzle-orm/expo-sqlite`, export it. Data functions in `src/data/`
+   will import it — screens never touch it.
+3. **`useMigrations`** (from `drizzle-orm/expo-sqlite/migrator`) in `src/app/_layout.tsx`, with the
+   bundle from `src/db/migrations/migrations.js`. Show a loading state while it runs and an error
+   state if it fails; render the `Stack` only on success.
+4. **Test:** start the app twice. First start runs migration 1, second start runs nothing. Verify
+   the five tables exist (temporary log, removed afterwards).
+5. **Fill in step 7** of `docs/guides/database-setup.md` (currently marked as to-do).
+6. **Doc drafts still owed** (show in chat first): the Drizzle decision for
+   `docs/process/06-decisions.md` (as Decision 9 or wherever it fits); for
+   `docs/process/09-implementation-notes.md` (still "To be written"): `sort_order` deferred to
+   V3-7, snapshot status coming as migration 2, Drizzle replacing the planned hand-written
+   migrations.
+
+Then **2b: the chart test** with dummy data, and decide on the chart library and whether a
+development build is needed now.
+
+**Version caution:** Drizzle docs are written for the 1.0 RC; we use stable 0.45. Check imports
+and APIs against the installed package (`node_modules/drizzle-orm/expo-sqlite/`) before advising.
+Expo docs: always the SDK 57 versioned pages.
 
 ## Where things stand
 
 - **Step 1 done:** empty screens with a Stack. `src/app/`: `index.tsx` (Home, `/`), `entry.tsx`,
-  `month/[month].tsx` (reads the param, sets its header with `Stack.Title`), `settings.tsx`
-  (one link to Manage), `manage.tsx`. Each screen has its own background color for now.
-- NativeWind v4.2.7 with Tailwind v3 is set up and works on the phone (yellow test screen).
-  Recorded as Decision 3 in `06-decisions.md`; the decisions in chapter 7 are now 4–8.
-- The app runs in Expo Go. A development build is still needed before V1 is done (V1-1),
-  earlier if the chart library needs native code.
-- **Step 2a half done:** Drizzle ORM 0.45 (stable, not the 1.0 RC) with `expo-sqlite`. Config in
-  `drizzle.config.ts`, `babel.config.js` (inline-import for `.sql`), `metro.config.js` (`sql`
-  extension). Schema in `src/db/schema.ts`, migration 1 generated as
-  `src/db/migrations/0000_initial_schema.sql`. **Not committed yet.** The migration has never
-  run, so it may still be edited (delete the folder and regenerate).
-- The data layer lives under `src/` (`src/db/`, `src/data/`). Not documented on purpose: the rule
-  "only the data layer contains SQL" is unchanged.
+  `month/[month].tsx` (reads the param, header via `Stack.Title`), `settings.tsx` (one link to
+  Manage), `manage.tsx`. Each screen has its own background colour for now.
+- **Styling:** NativeWind 4.2.7 with Tailwind v3, works on the phone. Decision 3.
+- **Step 2a half done:** Drizzle 0.45 + drizzle-kit 0.31 + `expo-sqlite` 57 installed and
+  configured (`drizzle.config.ts`, Babel inline-import, Metro `sql` extension).
+  Schema in `src/db/schema.ts`, migration 1 in `src/db/migrations/0000_initial_schema.sql`.
+  **Migration 1 has never run anywhere** — it may still be changed (delete the folder, regenerate
+  with `--name=initial_schema`). Once it runs on my phone, changing it means clearing Expo Go's
+  data; after the first release, never.
+- The app runs in Expo Go. A development build is needed before V1 is done (V1-1), earlier if the
+  chart library needs native code.
+
+## The schema (migration 1)
+
+| Table | Columns | Key rules |
+| ----- | ------- | --------- |
+| `category` | `id`, `name` | `name` unique |
+| `account` | `id`, `category_id`, `name`, `is_active` | `category_id` → category, restrict; `is_active` boolean, default true; names may repeat |
+| `snapshot` | `id`, `year_month` | `year_month` unique, CHECK: `GLOB '[0-9][0-9][0-9][0-9]-[0-1][0-9]'` AND month 01–12 |
+| `entry` | `id`, `snapshot_id`, `account_id`, `value` | both references restrict; unique (`snapshot_id`, `account_id`); `value` integer, not null, may be negative |
+| `setting` | `key`, `value` | `key` text primary key, `value` not null |
+
+Everything is `NOT NULL`. Database names snake_case, TypeScript keys camelCase. No `sort_order`.
+Full reasoning: `docs/learnings/schema-design.md`.
+
+**Open question for step 4:** the unique constraint on `entry` rejects a second insert for the
+same account and month. Correcting a value therefore needs an update (or upsert), not an insert.
 
 ## Build order
 
-1. Empty screens and navigation: Home, Entry, Month detail, Manage
-   (Settings has nothing to do in V1, Onboarding is V2)
-2. Open the database, first migration with the five tables
-   → **Chart test here** (option C): try a chart library with dummy data, then decide on
-   the library and whether a development build is needed now
-3. Data functions for categories and accounts, Manage screen (V1-2) — first real SQL
+1. ~~Empty screens and navigation~~ done
+2. Open the database, migration 1 (**in progress**) → then the chart test (2b)
+3. Data functions for categories and accounts, Manage screen (V1-2) — first real queries
 4. Entry flow, one account at a time (V1-3, V1-4)
-5. Resume an interrupted entry (V1-5)
+5. Resume an interrupted entry (V1-5) — adds the snapshot status as migration 2
 6. Home: total and change since last month (V1-6)
 7. Month detail with previous/next and corrections (V1-8, V1-9)
 8. Chart (V1-7)
 9. Development build, check that an update keeps the data (V1-1, V1-10)
 
 **Proposed, not yet confirmed — the "middle path":** screens that only show data start with
-dummy data returned by typed functions in `src/data/`. The dummy data is deliberately awkward:
-a missing month, a negative value, a zero. Screens that create data (Manage, Entry) use the real
-database from the start. The screens never change when the dummy data is replaced by SQL.
+dummy data returned by typed functions in `src/data/`, deliberately awkward (a missing month, a
+negative value, a zero). Screens that create data (Manage, Entry) use the real database from the
+start. Ask me before step 3.
 
-## Decided in step 1
+## Decisions so far
 
-- Home is `src/app/index.tsx` at `/`, no `/home`.
-- The month reaches Month detail as a route param: `month/[month].tsx`, read with
-  `useLocalSearchParams`. Not validated yet — `/month/mange` or `2026-13` get through.
-- Navigation: Stack (A). Tabs can be added later with a group layout if wanted.
-- Settings exists in V1 with a single row, Manage (option B), so Home's gear never has to change.
-- No central `paths.ts`: the file tree is the route definition and typed routes catch broken
-  links. A `monthHref()` helper may make sense once a second screen links to months.
+**Step 1:**
+- Home is `src/app/index.tsx` at `/`. Navigation is a Stack; Tabs could be added later.
+- Settings exists in V1 with one row, Manage, so Home's gear never changes.
+- Month detail gets the month as a route param (`month/[month].tsx`). Not validated yet —
+  `/month/mange` gets through.
+- No central `paths.ts`: the file tree defines routes, typed routes catch broken links. A
+  `monthHref()` helper may make sense once a second screen links to months.
 
-## Decided in step 2
-
+**Step 2:**
 - Drizzle instead of hand-written `user_version` migrations, for types derived from the schema.
-  Prisma for Expo is still Early Access and stalled, so not an option.
-- Database names in snake_case (SQL convention), TypeScript keys in camelCase.
-- `sort_order` dropped for V1: reordering is V3-7, V1 sorts by `id`. Added by a migration later.
-- Snapshot status (V1-5) comes as migration 2 when step 5 is built (B2), not in migration 1.
-- All references use `onDelete: "restrict"`: deleting history always takes deliberate code.
-  Deleting a category will ask the user to move or delete its accounts (Decision 6 applies).
-- `year_month` has a CHECK (four-digit year, month 01–12) plus one tested function that turns a
-  date into `year_month`. String normalization waits for the CSV import (V2-9).
-- Defaults only where a value is genuinely correct (`is_active = true`), never as a safety net.
+  Prisma for Expo is Early Access and stalled. Stable 0.45, not the 1.0 RC.
+- `sort_order` dropped for V1 (reordering is V3-7); V1 sorts by `id`. Added by migration later.
+- Snapshot status (V1-5) comes as migration 2 in step 5.
+- All references `onDelete: "restrict"`. Deleting a category will ask the user to move or delete
+  its accounts (Decision 6 applies to accounts with history).
+- `year_month`: database CHECK plus one tested function that turns a date into `year_month`
+  (watch out: `getMonth()` counts from 0, no leading zero). Normalizing strings waits for the
+  CSV import (V2-9).
+- Defaults only for genuinely correct values, never as a safety net.
 
 ## Testing
 
-I want to learn testing, I have done too little of it. Set it up when the first pure data-layer
-function exists (the year_month function, step 2/3). Write the tests **before** the function:
-my list of awkward inputs is the test.
+I want to learn testing. Set it up with the first pure data-layer function — the date →
+`year_month` function. Write the tests **before** the function: January, September, December,
+single-digit months.
 
-## Next step
+## Docs
 
-1. Commit the schema, migration, config and the docs restructure.
-2. Rest of 2a: database module in `src/db/` (open the database, `PRAGMA foreign_keys = ON`,
-   create the Drizzle object), `useMigrations` in `_layout.tsx` with loading and error state,
-   test with two app starts.
-3. Doc drafts: the Drizzle decision for `06-decisions.md`; `sort_order` deferred and status as
-   migration 2 for `09-implementation-notes.md`.
-4. Learning docs: all four written. Fill in step 7 of `docs/guides/database-setup.md` when 2a is done.
-5. Then 2b: the chart test. The "middle path" for dummy data is still unconfirmed.
-
-## Docs: learnings and guides
-
-- `docs/learnings/`: concepts and best practices, not tied to a specific setup.
-- `docs/guides/`: step-by-step instructions for things to repeat (`setup.md`, `commits.md`).
-- Both in the style of `setup.md`: short dated intro, tables, bold numbered steps, prose that
-  explains why. Both have their own table in the README.
-- Commits use `feat:` from now on, not `feature:` (see `docs/guides/commits.md`).
-
-Learning topics: **schema design and constraints (done)**, **local database and migrations
-(done, with the guide `database-setup.md`)**, **styling with NativeWind (done, with the guide `nativewind-setup.md`)**, **engineering
-judgment (done)**. All four written; new topics only when I name them. `database-setup.md` step 7 is a to-do: fill it in once the database module and
-`useMigrations` are built.
-
-Process: I name the topic, Claude gives a few keywords, I write down everything I remember,
-Claude corrects it and shows a draft in the chat, I confirm, then Claude writes the file and
-adds it to the README.
+- `docs/process/`: the concept chapters 1–11.
+- `docs/learnings/`: concepts and best practices. Done: schema design, migrations, styling,
+  engineering judgment. New topics only when I name them.
+- `docs/guides/`: step-by-step instructions to repeat. Done: setup, commits, database setup
+  (step 7 to-do), NativeWind setup.
+- `docs/technical/`: this file, `DEFAULT_README.md`.
+- Style for learnings and guides: like `docs/guides/setup.md` — short dated intro, tables, bold
+  numbered steps, prose that explains why. Every new file gets a row in its README table.
+- Process for learning docs: I name the topic, Claude gives keywords, I write what I remember,
+  Claude corrects it and shows a draft in the chat, I confirm, Claude writes the file.
+- Commits: Conventional Commits with `feat:` (not `feature:`), see `docs/guides/commits.md`.
 
 ## How Claude works with me
 
-These add to `CLAUDE.md`, which loads this file automatically. Since 30.09.2026 the core rule is: Claude gives a short theory
-introduction in the chat, I implement, Claude reviews on request. I run all commands.
+These add to `CLAUDE.md`.
 
-- **Docs:** always show a draft in the chat and say where it goes before editing any
-  documentation file.
-- **Files:** Claude creates files only when I ask. Configuration copied from official docs
-  (babel, metro, tailwind config) Claude may write when I ask, then explains every line —
-  retyping it teaches nothing. App logic stays mine.
+- **The loop:** I frame the task, Claude gives a short theory intro with a small illustrative
+  snippet, I implement, Claude reviews on request. When I explicitly ask Claude to write
+  something, it does — then explains it.
+- **Commands:** I run every command in the project myself, including type checks. Claude gives
+  the command and explains it.
+- **Docs:** always show a draft in the chat and say where it goes before editing a doc file.
+- **Config** copied from official docs Claude may write when I ask, then explains every line.
 - **Check-questions are optional.** One at a time at most; when I want to move on, move on.
-- **Background:** I know React, Next.js and Tailwind. This is my first React Native app and my
-  first time with SQLite on a device. Styling is not my strength.
+- **Over-engineering:** I want good practice, not overkill. Use the "permanent, silent, cheap"
+  test and say when something is overkill.
+- **Background:** I know React, Next.js and Tailwind and studied software engineering. First
+  React Native app, first SQLite on a device. Styling is not my strength. My goal is to think and
+  judge like an engineer, not to memorise syntax.
