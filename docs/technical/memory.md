@@ -1,26 +1,28 @@
 # Session memory
 
 Where the build stands between sessions, so work can continue on any computer.
-Loaded automatically through `CLAUDE.md`. Last updated: 04.10.2026.
+Loaded automatically through `CLAUDE.md`. Last updated: 05.10.2026.
 
 ## Where we left off
 
-**Step 2a is done:** `src/db/client.ts` opens `perihel.db` once (module singleton), runs
-`PRAGMA foreign_keys = ON` and exports the Drizzle `db`. `src/app/_layout.tsx` runs
-`useMigrations`: error view first, `null` while running, the `Stack` on success. Tested with two
-starts: five tables plus `__drizzle_migrations`. The guide `docs/guides/database-setup.md` is
-complete (steps 7–9). Commit: `feat(db): open database and run migrations at startup` — check
-with `git log` that it was made.
+**Step 2 is done.** 2a: the database opens at startup and migration 1 has run on my phone.
+2b: the chart spike is done — **Decision 10: react-native-gifted-charts**, no development build
+needed for the chart. Decisions 9 (Drizzle) and 10 are in `docs/process/06-decisions.md`, step 2
+notes in `09-implementation-notes.md`.
 
-**Migration 1 has now run on my phone.** Changing it means clearing Expo Go's data first; after
-the first release, never.
+**The spike code is kept on the branch `spike-chart`** (pushed, never merged). It has every
+working prop for the mockup style: dashed gaps via `lineSegments`, hidden y-axis and rules,
+colours `#3B4A8C` (line) and `#9AA3C7` (gap), equal `initialSpacing`/`endSpacing`, the chart
+wrapped in a plain `View` to centre it. **Start step 8 from it.** The chart packages are not on
+`main`: install them again in step 8 with
+`npx expo install react-native-gifted-charts expo-linear-gradient react-native-svg`.
 
 **Next:**
 
-1. ~~Doc drafts~~ done: Decision 9 (Drizzle) at the end of chapter 6, step 2 notes in chapter 9.
-2. **2b: the chart test** with dummy data — decide on the chart library and whether a development
-   build is needed now. Framing first: ask me how I would approach it.
-3. Before step 3: confirm or reject the "middle path" (see Build order).
+1. **Decide the "middle path"** (see Build order) — ask me before step 3.
+2. **Step 3: data functions for categories and accounts, and the Manage screen (V1-2).** The first
+   real queries through the Drizzle `db` from `src/db/client.ts`. Framing first: ask me how I
+   would approach it. Testing gets set up with the first pure function (see Testing).
 
 **Version caution:** Drizzle docs are written for the 1.0 RC; we use stable 0.45. Check imports
 and APIs against the installed package (`node_modules/drizzle-orm/expo-sqlite/`) before advising.
@@ -58,13 +60,13 @@ same account and month. Correcting a value therefore needs an update (or upsert)
 ## Build order
 
 1. ~~Empty screens and navigation~~ done
-2. ~~Open the database, migration 1~~ done → **next: the chart test (2b)**
-3. Data functions for categories and accounts, Manage screen (V1-2) — first real queries
+2. ~~Open the database, migration 1, chart test~~ done (Decisions 9 and 10)
+3. **Next:** data functions for categories and accounts, Manage screen (V1-2) — first real queries
 4. Entry flow, one account at a time (V1-3, V1-4)
 5. Resume an interrupted entry (V1-5) — adds the snapshot status as migration 2
 6. Home: total and change since last month (V1-6)
 7. Month detail with previous/next and corrections (V1-8, V1-9)
-8. Chart (V1-7)
+8. Chart (V1-7) — start from the `spike-chart` branch; segments and labels computed in the data layer
 9. Development build, check that an update keeps the data (V1-1, V1-10)
 
 **Proposed, not yet confirmed — the "middle path":** screens that only show data start with

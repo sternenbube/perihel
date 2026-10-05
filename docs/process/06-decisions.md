@@ -86,6 +86,36 @@ documentation is written for.
 - Details in the [database setup guide](../guides/database-setup.md) and
   [Local database and migrations](../learnings/migrations.md).
 
+### Decision 10: Chart library
+
+_Made during the build, step 2b (05.10.2026), after a spike on the branch `spike-chart`._
+
+**Options considered:** react-native-gifted-charts (SVG), Victory Native (Skia), and drawing the
+chart by hand with `react-native-svg`.
+
+**Rejected early:** drawing by hand. The best way to learn how charts work, but too slow for a V1
+due at the end of October.
+
+**Main comparison:** gifted-charts against Victory Native. Both work in Expo Go — Skia is included
+in Expo Go for SDK 57, contrary to many articles. Victory Native's advantage is performance with
+thousands of points, which does not matter here: Perihel has 12 points a year. Gifted-charts needs
+one component and a few props.
+
+**The spike** tested the cases that matter for Perihel: a zero, a negative value, a missing month
+in the middle and at the end, a realistic jump, label control, and the style of the mockup. All
+passed.
+
+**Decision:** react-native-gifted-charts. No development build is needed for the chart.
+
+**Consequences:**
+
+- The library has quirks that are found in its source, not its docs: `extrapolateMissingValues`
+  silently replaces custom `lineSegments`, and with `adjustToWidth` the spacing defaults to 20
+  left and 0 right. Wrapping the chart in a plain `View` keeps it centred.
+- The dashed segments depend on where the gaps are, so they are computed from the data by a
+  function in the data layer — a candidate for a unit test.
+- Which x-axis labels are shown is decided when the chart data is prepared, not by the chart.
+
 ---
 
 [← Out of scope](05-out-of-scope.md)  ·  [Architecture and data model →](07-architecture.md)  ·  [Overview](../../README.md)
