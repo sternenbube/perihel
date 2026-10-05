@@ -17,11 +17,7 @@ the first release, never.
 
 **Next:**
 
-1. **Doc drafts still owed** (show in chat first): the Drizzle decision for
-   `docs/process/06-decisions.md` (as Decision 9 or wherever it fits); for
-   `docs/process/09-implementation-notes.md` (still "To be written"): `sort_order` deferred to
-   V3-7, snapshot status coming as migration 2, Drizzle replacing the planned hand-written
-   migrations.
+1. ~~Doc drafts~~ done: Decision 9 (Drizzle) at the end of chapter 6, step 2 notes in chapter 9.
 2. **2b: the chart test** with dummy data — decide on the chart library and whether a development
    build is needed now. Framing first: ask me how I would approach it.
 3. Before step 3: confirm or reject the "middle path" (see Build order).

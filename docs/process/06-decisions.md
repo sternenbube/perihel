@@ -53,6 +53,39 @@ The deciding point is what this project is about. It is not about learning how t
 - React Native's styling rules still apply underneath: flexbox with a vertical default direction, no inherited styles, sizes as plain numbers. When a class seems to have no effect, the reason is usually one of these.
 - Tailwind v3 syntax instead of v4. A later switch to NativeWind v5 is possible once it is stable, but it is not planned.
 
+### Decision 9: Database access and migrations
+
+_Made during the build, step 2 (01.10.2026)._
+
+**Options considered:** hand-written SQL with migrations tracked through SQLite's
+`PRAGMA user_version`, Drizzle ORM, and Prisma.
+
+**Rejected early:** Prisma. Its React Native and Expo support is still an Early Access release,
+with open blockers since Expo SDK 52 and questions about whether it is still maintained. An app
+whose main promise is not losing data cannot depend on it.
+
+**Main comparison:** hand-written SQL against Drizzle. Hand-written migrations are the pattern in
+the Expo documentation, need no dependency and keep every statement visible. Their weakness is
+types: a query is a string, and TypeScript only believes the type written next to it. A typo in a
+column name, or a column renamed in a later migration, shows up at runtime as `undefined` — the
+kind of silent error Decision 1 chose TypeScript to prevent. Drizzle describes the schema in
+TypeScript, generates the migrations as plain SQL files, and derives the types of every query from
+the schema: rename a column and every query that uses the old name fails to compile.
+
+**Decision:** Drizzle ORM, on the stable 0.45 line rather than the 1.0 release candidate its
+documentation is written for.
+
+**Consequences:**
+
+- The schema lives in `src/db/schema.ts`; migrations are generated into `src/db/migrations/` and
+  run at app start. SQL is still read: every generated migration is reviewed before it is committed.
+- Setup is larger: a config file for drizzle-kit, and Babel and Metro changes so the `.sql` files
+  are bundled into the app.
+- Upgrading to Drizzle 1.0 is a planned step later. Until then, commands in the current Drizzle
+  documentation may differ slightly from the installed version.
+- Details in the [database setup guide](../guides/database-setup.md) and
+  [Local database and migrations](../learnings/migrations.md).
+
 ---
 
 [← Out of scope](05-out-of-scope.md)  ·  [Architecture and data model →](07-architecture.md)  ·  [Overview](../../README.md)
