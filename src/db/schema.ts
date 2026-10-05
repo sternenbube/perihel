@@ -5,23 +5,42 @@ import {
   sqliteTable,
   text,
   unique,
+  uniqueIndex,
 } from "drizzle-orm/sqlite-core";
 
 // e.g. Bank, Cash, Investments
-export const category = sqliteTable("category", {
-  id: integer("id").primaryKey(),
-  name: text("name").notNull().unique(),
-});
+export const category = sqliteTable(
+  "category",
+  {
+    id: integer("id").primaryKey(),
+    name: text("name").notNull(),
+  },
+  (table) => [
+    // "Bank" and "bank" count as the same name. lower() only folds ASCII,
+    // so "Ä" and "ä" are still different.
+    uniqueIndex("category_name_lower_unique").on(sql`lower(${table.name})`),
+    check("category_name_not_empty", sql`length(trim(${table.name})) > 0`),
+  ],
+);
 
 // e.g. UBS savings, Revolut, Credit card
-export const account = sqliteTable("account", {
-  id: integer("id").primaryKey(),
-  categoryId: integer("category_id")
-    .notNull()
-    .references(() => category.id, { onDelete: "restrict" }),
-  name: text("name").notNull(),
-  isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
-});
+export const account = sqliteTable(
+  "account",
+  {
+    id: integer("id").primaryKey(),
+    categoryId: integer("category_id")
+      .notNull()
+      .references(() => category.id, { onDelete: "restrict" }),
+    // Names may repeat, e.g. "Savings" under two categories.
+    name: text("name").notNull(),
+    isActive: integer("is_active", { mode: "boolean" })
+      .notNull()
+      .default(true),
+  },
+  (table) => [
+    check("account_name_not_empty", sql`length(trim(${table.name})) > 0`),
+  ],
+);
 
 // One month, e.g. "2026-09". Exists only once.
 export const snapshot = sqliteTable(

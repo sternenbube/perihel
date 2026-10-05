@@ -17,9 +17,25 @@ wrapped in a plain `View` to centre it. **Start step 8 from it.** The chart pack
 `main`: install them again in step 8 with
 `npx expo install react-native-gifted-charts expo-linear-gradient react-native-svg`.
 
+**Step 3 in progress (05.10.2026):**
+- Decided: Manage needs `getCategoriesWithAccounts()` (nested, the shape the screen needs),
+  `createCategory(name)`, `renameCategory(id, name)`, `createAccount(categoryId, name)`,
+  `renameAccount(id, name)`. A flat `getAccounts()` comes in step 4. **Deleting is not in V1**
+  (V1-2 is create and rename only).
+- Checks on three layers, each with its own job: screen helps before failing and shows errors;
+  data function trims and translates database errors into readable messages; database is the
+  final guard. No check-then-act: insert and handle the rejection.
+- **Migration 2 `0001_name_rules.sql`**: category names unique case-insensitively (unique index on
+  `lower(name)`, ASCII only — "Ä"/"ä" still differ) and not empty (`length(trim(name)) > 0`) on
+  category and account. First run failed because of the drizzle-kit bug below and rolled back;
+  the SQL was fixed by hand. Check after `npx expo start --clear` that Home appears.
+- Next in step 3: theory for the data functions (how errors reach the screen), then the
+  functions, then the Manage screen. Set up testing with the first pure function.
+
 **Next:**
 
-1. **Decide the "middle path"** (see Build order) — ask me before step 3.
+1. ~~Middle path~~ decided: **seeds (option C)** — a dev-only function writes deliberately awkward
+   test data into the real database through the real data functions. Set it up before step 6.
 2. **Step 3: data functions for categories and accounts, and the Manage screen (V1-2).** The first
    real queries through the Drizzle `db` from `src/db/client.ts`. Framing first: ask me how I
    would approach it. Testing gets set up with the first pure function (see Testing).
@@ -69,10 +85,9 @@ same account and month. Correcting a value therefore needs an update (or upsert)
 8. Chart (V1-7) — start from the `spike-chart` branch; segments and labels computed in the data layer
 9. Development build, check that an update keeps the data (V1-1, V1-10)
 
-**Proposed, not yet confirmed — the "middle path":** screens that only show data start with
-dummy data returned by typed functions in `src/data/`, deliberately awkward (a missing month, a
-negative value, a zero). Screens that create data (Manage, Entry) use the real database from the
-start. Ask me before step 3.
+**Decided — seeds (option C):** screens that show data use real queries from the start. Test data
+comes from a dev-only seed that writes deliberately awkward data (a missing month, a negative
+value, a zero, a realistic jump) through the real data functions. Set it up before step 6.
 
 ## Decisions so far
 
@@ -95,6 +110,21 @@ start. Ask me before step 3.
   (watch out: `getMonth()` counts from 0, no leading zero). Normalizing strings waits for the
   CSV import (V2-9).
 - Defaults only for genuinely correct values, never as a safety net.
+
+## Known traps
+
+- **drizzle-kit 0.31 quotes expression indexes wrongly** (`(\`lower("name")\`)` instead of
+  `(lower("name"))`). Always read generated SQL; fix expression indexes by hand before the
+  migration runs anywhere.
+- **`PRAGMA foreign_keys=OFF` in a generated migration does nothing**: Drizzle runs all pending
+  migrations in one transaction, and SQLite ignores that PRAGMA inside a transaction. A table
+  rebuild of a table that others reference (category, account, snapshot) therefore fails with
+  `FOREIGN KEY constraint failed` once rows exist. Decide a solution before the next rebuild
+  migration (e.g. switch foreign keys off in `client.ts` before migrating and on afterwards,
+  plus `PRAGMA foreign_key_check`). Adding a column does not rebuild and is not affected.
+- **Backfill:** a new rule that existing rows would break needs an `UPDATE` in the migration
+  first (`drizzle-kit generate --custom` for hand-written SQL). A default only affects new rows.
+- After editing a `.sql` migration, start with `npx expo start --clear` (Babel caches the inlined SQL).
 
 ## Testing
 
