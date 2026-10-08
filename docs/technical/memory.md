@@ -157,7 +157,7 @@ values), send through the user's own email app. Copy: friendly but clear, not jo
 - `docs/learnings/`: concepts and best practices. Done: schema design, migrations, styling,
   engineering judgment. New topics only when I name them.
 - `docs/guides/`: step-by-step instructions to repeat. Done: setup, commits, database setup
-  (complete), NativeWind setup.
+  (complete), NativeWind setup, testing setup.
 - `docs/technical/`: this file, `DEFAULT_README.md`.
 - Style for learnings and guides: like `docs/guides/setup.md` — short dated intro, tables, bold
   numbered steps, prose that explains why. Every new file gets a row in its README table.

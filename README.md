@@ -58,6 +58,7 @@ Step-by-step instructions for things to repeat.
 | [Commit messages](docs/guides/commits.md)           | Commit message convention: types, subject rules, goal IDs        |
 | [Database setup](docs/guides/database-setup.md)     | Drizzle with expo-sqlite: install, config, schema, migrations    |
 | [NativeWind setup](docs/guides/nativewind-setup.md) | NativeWind v4 with Tailwind v3: packages, config files, test     |
+| [Testing setup](docs/guides/testing-setup.md)       | Jest with jest-expo: install, config, where tests go, test-first |
 
 ### Technical
 
