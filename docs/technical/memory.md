@@ -1,7 +1,7 @@
 # Session memory
 
 Where the build stands between sessions, so work can continue on any computer.
-Loaded automatically through `CLAUDE.md`. Last updated: 05.10.2026.
+Loaded automatically through `CLAUDE.md`. Last updated: 08.10.2026.
 
 ## Where we left off
 
@@ -29,8 +29,20 @@ wrapped in a plain `View` to centre it. **Start step 8 from it.** The chart pack
   `lower(name)`, ASCII only — "Ä"/"ä" still differ) and not empty (`length(trim(name)) > 0`) on
   category and account. First run failed because of the drizzle-kit bug below and rolled back;
   the SQL was fixed by hand. Check after `npx expo start --clear` that Home appears.
-- Next in step 3: theory for the data functions (how errors reach the screen), then the
-  functions, then the Manage screen. Set up testing with the first pure function.
+- **Testing is set up** (Jest + jest-expo, `npm test`, `moduleNameMapper` for `@/`, tests in
+  `__tests__` folders, never under `src/app/`). First test-driven function done:
+  `src/data/errors.ts` → `toUserMessage(error: unknown): string | null`, 5 tests green. It reads
+  `error.cause.message` (Drizzle 0.45 wraps errors in `DrizzleQueryError`) and matches constraint
+  names with `includes` (the real expo-sqlite message is longer: "Error code 19: ...").
+- **Error handling decided:** expected errors (duplicate, empty) → data functions return a result
+  object `{ ok: false, error }` / `{ ok: true, ... }` (option B). Unexpected errors → data functions
+  re-throw; **the screen catches them and shows a general message** ("Something went wrong on our
+  side. It's not something you did.") — never silence, because an uncaught async error in a
+  release build does nothing visible. A shared helper only once a second screen needs it.
+- `getCategoriesWithAccounts()` uses two plain selects grouped in the function, not relational
+  queries (their API changes in Drizzle 1.0).
+- Next in step 3: the data functions in `src/data/categories.ts` and `accounts.ts`, then the
+  Manage screen (with the screen-level catch). Framing first.
 
 **Next:**
 
@@ -128,9 +140,16 @@ value, a zero, a realistic jump) through the real data functions. Set it up befo
 
 ## Testing
 
-I want to learn testing. Set it up with the first pure data-layer function — the date →
-`year_month` function. Write the tests **before** the function: January, September, December,
-single-digit months.
+Set up on 08.10.2026, first test: `toUserMessage`. Next candidates, tests written **before** the
+function: the date → `year_month` function (January, September, December, single-digit months),
+the chart segment computation (step 8). I write the functions myself from now on — I know the
+shape (guard clause, `includes`, red → green).
+
+## Later: bug reports (V3-6)
+
+The report button for unexpected errors is goal V3-6 (pre-filled email). Privacy requirements:
+show the user what will be sent, leave out query parameters (they can contain account names and
+values), send through the user's own email app. Copy: friendly but clear, not jokey.
 
 ## Docs
 
