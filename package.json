@@ -36,6 +36,8 @@
     "babel-plugin-inline-import": "^3.0.0",
     "babel-preset-expo": "^57.0.12",
     "drizzle-kit": "^0.31.11",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~57.0.2",
     "jest": "~29.7.0",
     "jest-expo": "~57.0.5",
     "tailwindcss": "^3.4.19",
