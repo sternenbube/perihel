@@ -1,7 +1,7 @@
 # Session memory
 
 Where the build stands between sessions, so work can continue on any computer.
-Loaded automatically through `CLAUDE.md`. Last updated: 08.10.2026.
+Loaded automatically through `CLAUDE.md`. Last updated: 12.10.2026.
 
 ## Where we left off
 
@@ -28,7 +28,7 @@ wrapped in a plain `View` to centre it. **Start step 8 from it.** The chart pack
 - **Migration 2 `0001_name_rules.sql`**: category names unique case-insensitively (unique index on
   `lower(name)`, ASCII only — "Ä"/"ä" still differ) and not empty (`length(trim(name)) > 0`) on
   category and account. First run failed because of the drizzle-kit bug below and rolled back;
-  the SQL was fixed by hand. Check after `npx expo start --clear` that Home appears.
+  the SQL was fixed by hand. Has run on the phone, Home appears.
 - **Testing is set up** (Jest + jest-expo, `npm test`, `moduleNameMapper` for `@/`, tests in
   `__tests__` folders, never under `src/app/`). First test-driven function done:
   `src/data/errors.ts` → `toUserMessage(error: unknown): string | null`, 5 tests green. It reads
@@ -41,8 +41,18 @@ wrapped in a plain `View` to centre it. **Start step 8 from it.** The chart pack
   release build does nothing visible. A shared helper only once a second screen needs it.
 - `getCategoriesWithAccounts()` uses two plain selects grouped in the function, not relational
   queries (their API changes in Drizzle 1.0).
-- Next in step 3: the data functions in `src/data/categories.ts` and `accounts.ts`, then the
-  Manage screen (with the screen-level catch). Framing first.
+- **Category data functions done (12.10.2026)** in `src/data/categories.ts`: `createCategory`,
+  `renameCategory`, `getCategoriesWithAccounts` (map + filter + spread). Names are trimmed in the
+  data function. `renameCategory` throws when `changes === 0` (wrong id is a bug, not a user
+  error). Write functions return `WriteResult` (`src/data/write-result.ts`,
+  `{ ok: true } | { ok: false; error: string }`). Row types via `$inferSelect`: `Category`,
+  `CategoryWithAccounts`, and `Account` for now — **move `Account` to `accounts.ts`** when that
+  file is created.
+- **Repeated catch body** (`toUserMessage` → re-throw or `{ ok: false }`): kept inline for now
+  (option A). Decide on a `toWriteFailure` helper once `accounts.ts` has its two copies.
+- Next in step 3: `accounts.ts` (`createAccount`, `renameAccount`). It repeats the category
+  pattern, so Claude drafts it and I review. Then the Manage screen (with the screen-level catch),
+  in bites.
 
 **Next:**
 
@@ -169,9 +179,19 @@ values), send through the user's own email app. Copy: friendly but clear, not jo
 
 These add to `CLAUDE.md`.
 
-- **The loop:** I frame the task, Claude gives a short theory intro with a small illustrative
-  snippet, I implement, Claude reviews on request. When I explicitly ask Claude to write
-  something, it does — then explains it.
+- **The loop, in bites (since 12.10.2026):** each step is split into small bites. One bite = a
+  short theory piece with the exact syntax (checked against the installed versions, examples on
+  unrelated data) + one small challenge. I implement, come back, get a short review, next bite.
+  Claude gives the syntax, the logic is mine. If I'm stuck on syntax, Claude shows the structure
+  with a blank for the logic. Tried on `getCategoriesWithAccounts()`, and it was the right balance
+  between theory and coding.
+- **Who writes what:** the first time a concept appears, I write it (in bites). Repeats of a
+  pattern I already wrote (e.g. `createAccount` after `createCategory`) Claude may draft for me
+  to review. Small fixes (typos, a forgotten import) Claude applies directly and says what it
+  changed. Design questions always come to me.
+- **Reviews** list everything in one pass. The question → hint → concept ladder only when I ask
+  for a hint.
+- When I explicitly ask Claude to write something, it does — then explains it.
 - **Commands:** I run every command in the project myself, including type checks. Claude gives
   the command and explains it.
 - **Docs:** always show a draft in the chat and say where it goes before editing a doc file.

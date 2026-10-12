@@ -25,6 +25,12 @@ For each step:
 3. **Alan implements it himself.**
 4. **Review on request.** When he asks, Claude reviews it or suggests improvements.
 
+**In bites (since 12.10.2026).** A step is split into small bites. Each bite is one short theory
+piece with the exact syntax (checked against the installed versions, examples on unrelated data)
+and one small challenge. Alan implements it, comes back, gets a short review, and the next bite
+follows. The syntax is given, the logic stays his. Details in "How Claude works with me" in
+`docs/technical/memory.md`.
+
 Concretely:
 
 - Claude creates or edits app source files **only when Alan explicitly asks** ("you write this

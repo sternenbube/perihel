@@ -3,7 +3,11 @@ import { eq } from "drizzle-orm";
 import { toUserMessage } from "@/data/errors";
 import type { WriteResult } from "@/data/write-result";
 import { db } from "@/db/client";
-import { category } from "@/db/schema";
+import { account, category } from "@/db/schema";
+
+export type Account = typeof account.$inferSelect;
+export type Category = typeof category.$inferSelect;
+export type CategoryWithAccounts = Category & { accounts: Account[] };
 
 export async function createCategory(name: string): Promise<WriteResult> {
   try {
@@ -38,4 +42,16 @@ export async function renameCategory(
     return { ok: false, error: message };
   }
   return { ok: true };
+}
+
+export async function getCategoriesWithAccounts(): Promise<
+  CategoryWithAccounts[]
+> {
+  const categories = await db.select().from(category).orderBy(category.id);
+  const accounts = await db.select().from(account).orderBy(account.id);
+
+  return categories.map((cat) => ({
+    ...cat,
+    accounts: accounts.filter((acc) => acc.categoryId === cat.id),
+  }));
 }
