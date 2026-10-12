@@ -2,10 +2,11 @@ import { toUserMessage } from "../errors";
 
 // ! This file creates TestCases that should simulate real errors that might occur
 
-// Drizzle wraps every database error: the SQLite message sits in `cause`.
-// These fakes have the same shape as what Drizzle throws.
+// This fake has the same shape as real errors thrown by sqlite (Copied from a real expo-sqlite error on the phone)
 function databaseError(sqliteMessage: string) {
-  return { cause: new Error(sqliteMessage) };
+  return new Error(
+    `Calling the 'runSync' function has failed\n→ Caused by: SQLiteErrorException: Error code 19: ${sqliteMessage}`,
+  );
 }
 
 describe("toUserMessage", () => {
@@ -39,5 +40,9 @@ describe("toUserMessage", () => {
 
   test("returns null for an error that is not from the database", () => {
     expect(toUserMessage(new Error("something else"))).toBeNull();
+  });
+
+  test("returns null for an error that is not of type Error", () => {
+    expect(toUserMessage("Ooops")).toBeNull();
   });
 });

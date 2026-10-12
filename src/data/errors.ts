@@ -1,17 +1,9 @@
 // Translates a database error the user caused into a message for the screen.
 // Returns null for everything else: that is a bug and should be re-thrown.
 export function toUserMessage(error: unknown): string | null {
-  // Only database errors wrapped by Drizzle have the SQLite message in `cause`.
-  if (
-    typeof error !== "object" ||
-    error === null ||
-    !("cause" in error) ||
-    !(error.cause instanceof Error)
-  ) {
-    return null;
-  }
-
-  const message = error.cause.message;
+  // expo-sqlite throws a plain Error with the SQLite text in its message.
+  if (!(error instanceof Error)) return null;
+  const message = error.message;
 
   // Match on the constraint names (check, uniqueIndex) from schema.ts with includes, not ===:
   // the real message has more text around it ("Error code 19: ..."), and SQLite's wording
