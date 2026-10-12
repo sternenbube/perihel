@@ -1,11 +1,11 @@
 import { eq } from "drizzle-orm";
 
+import type { Account } from "@/data/accounts";
 import { toUserMessage } from "@/data/errors";
 import type { WriteResult } from "@/data/write-result";
 import { db } from "@/db/client";
 import { account, category } from "@/db/schema";
 
-export type Account = typeof account.$inferSelect;
 export type Category = typeof category.$inferSelect;
 export type CategoryWithAccounts = Category & { accounts: Account[] };
 
