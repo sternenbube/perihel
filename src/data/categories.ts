@@ -14,7 +14,9 @@ export async function createCategory(name: string): Promise<WriteResult> {
     await db.insert(category).values({ name: name.trim() });
   } catch (error) {
     const message = toUserMessage(error);
-    if (message === null) throw error;
+    if (message === null) {
+      throw error;
+    }
     return { ok: false, error: message };
   }
   return { ok: true };
