@@ -179,6 +179,7 @@ These add to `CLAUDE.md`.
 - **Check-questions are optional.** One at a time at most; when I want to move on, move on.
 - **Over-engineering:** I want good practice, not overkill. Use the "permanent, silent, cheap"
   test and say when something is overkill.
+- **Next steps:** every reply ends with a bullet list of what I should change or fix next.
 - **Background:** I know React, Next.js and Tailwind and studied software engineering. First
   React Native app, first SQLite on a device. Styling is not my strength. My goal is to think and
   judge like an engineer, not to memorise syntax.
