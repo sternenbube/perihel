@@ -6,6 +6,9 @@ import {
 import { useEffect, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 
+const UNEXPECTED_ERROR_MESSAGE =
+  "Something went wrong on our side. It’s not something you did.";
+
 export default function Manage() {
   const [text, setText] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -26,16 +29,21 @@ export default function Manage() {
   }
 
   async function handleAdd() {
-    const result = await createCategory(text);
+    try {
+      const result = await createCategory(text);
 
-    if (!result.ok) {
-      setErrorMessage(result.error);
-      return;
+      if (!result.ok) {
+        setErrorMessage(result.error);
+        return;
+      }
+
+      setCategoriesWithAccounts(await getCategoriesWithAccounts());
+      setText("");
+      setErrorMessage(null);
+    } catch (error) {
+      console.error("handleAdd failed: ", error);
+      setErrorMessage(UNEXPECTED_ERROR_MESSAGE);
     }
-
-    setCategoriesWithAccounts(await getCategoriesWithAccounts());
-    setText("");
-    setErrorMessage(null);
   }
 
   if (categoriesWithAccounts === null) return null; // or a loading indicator

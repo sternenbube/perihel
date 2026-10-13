@@ -31,9 +31,9 @@ wrapped in a plain `View` to centre it. **Start step 8 from it.** The chart pack
   the SQL was fixed by hand. Has run on the phone, Home appears.
 - **Testing is set up** (Jest + jest-expo, `npm test`, `moduleNameMapper` for `@/`, tests in
   `__tests__` folders, never under `src/app/`). First test-driven function done:
-  `src/data/errors.ts` → `toUserMessage(error: unknown): string | null`, 5 tests green. It reads
-  `error.cause.message` (Drizzle 0.45 wraps errors in `DrizzleQueryError`) and matches constraint
-  names with `includes` (the real expo-sqlite message is longer: "Error code 19: ...").
+  `src/data/errors.ts` → `toUserMessage(error: unknown): string | null`, 6 tests green. Guard
+  `instanceof Error`, then reads **`error.message`** and matches constraint names with `includes`.
+  (First version read `error.cause.message`, which was wrong for our driver, see Known traps.)
 - **Error handling decided:** expected errors (duplicate, empty) → data functions return a result
   object `{ ok: false, error }` / `{ ok: true, ... }` (option B). Unexpected errors → data functions
   re-throw; **the screen catches them and shows a general message** ("Something went wrong on our
@@ -48,19 +48,27 @@ wrapped in a plain `View` to centre it. **Start step 8 from it.** The chart pack
   `{ ok: true } | { ok: false; error: string }`). Row types via `$inferSelect`: `Category`,
   `CategoryWithAccounts`, and `Account` for now — **move `Account` to `accounts.ts`** when that
   file is created.
-- **Repeated catch body** (`toUserMessage` → re-throw or `{ ok: false }`): kept inline for now
-  (option A). Decide on a `toWriteFailure` helper once `accounts.ts` has its two copies.
-- Next in step 3: `accounts.ts` (`createAccount`, `renameAccount`). It repeats the category
-  pattern, so Claude drafts it and I review. Then the Manage screen (with the screen-level catch),
-  in bites.
+- **Account data functions done** in `src/data/accounts.ts` (`createAccount`, `renameAccount`,
+  type `Account`). A wrong `categoryId` fails the foreign key and is re-thrown (bug, not user error).
+- **Repeated catch body** (4 copies): decided to **keep it inline** (option A), no
+  `toWriteFailure` helper.
+- **Manage screen, bites 1–3a done (12.10.2026)** in `src/app/manage.tsx`: loads in `useEffect`
+  (inner async function, `[]`), state starts as `null` = "not loaded yet" (early return), list of
+  category names, "No categories yet" when empty. `TextInput` + "Add" `Pressable` →
+  `handleAdd` (create → on `{ ok: false }` show `errorMessage`, keep the text; on success reload,
+  clear text and message). `handleChangeText` clears the message while typing. Errors render with
+  `errorMessage !== null &&` (never `"" &&` in React Native: a bare string crashes).
+- **Next in step 3:** bite 3b, the **screen-level catch** in `handleAdd` (and the initial load):
+  unexpected errors → general message ("Something went wrong on our side…") + `console.error`.
+  Right now they end as "Uncaught (in promise)", which does nothing visible in a release build.
+  Then: rename a category, then the same for accounts (create, rename).
 
 **Next:**
 
 1. ~~Middle path~~ decided: **seeds (option C)** — a dev-only function writes deliberately awkward
    test data into the real database through the real data functions. Set it up before step 6.
-2. **Step 3: data functions for categories and accounts, and the Manage screen (V1-2).** The first
-   real queries through the Drizzle `db` from `src/db/client.ts`. Framing first: ask me how I
-   would approach it. Testing gets set up with the first pure function (see Testing).
+2. **Step 3: finish the Manage screen (V1-2)**, in bites: screen-level catch (3b), rename
+   categories, accounts (create, rename).
 
 **Version caution:** Drizzle docs are written for the 1.0 RC; we use stable 0.45. Check imports
 and APIs against the installed package (`node_modules/drizzle-orm/expo-sqlite/`) before advising.
@@ -78,6 +86,9 @@ Expo docs: always the SDK 57 versioned pages.
   through `useMigrations`. The database file lives in the app's sandbox on the phone.
 - The app runs in Expo Go. A development build is needed before V1 is done (V1-1), earlier if the
   chart library needs native code.
+- **Viewing the database:** the built-in expo-sqlite inspector. With the app running, press
+  Shift + M in the Expo terminal and choose "Open expo-sqlite". Browse, query, export. Editing rows
+  there skips the data functions, and `__drizzle_migrations` must never be edited.
 
 ## The schema (migration 1)
 
@@ -135,6 +146,17 @@ value, a zero, a realistic jump) through the real data functions. Set it up befo
 
 ## Known traps
 
+- **The expo-sqlite driver does not wrap errors.** Drizzle's async drivers throw a
+  `DrizzleQueryError` with the SQLite error in `cause`. The expo driver is synchronous and calls
+  `executeSync` directly (`node_modules/drizzle-orm/expo-sqlite/session.js`), so the error is a
+  plain `Error` from expo-sqlite with everything in `message`:
+  `Calling the 'runSync' function has failed → Caused by: SQLiteErrorException: Error code 19:
+  UNIQUE constraint failed: index 'category_name_lower_unique'`. Test fakes are copied from this
+  real message. If Drizzle is upgraded, check the shape on the phone again.
+- **Lint `react-hooks/set-state-in-effect`** flags an effect that calls a `useCallback` function
+  containing setState, even if the setState runs after `await`. Keep the async function *inside*
+  the effect, and in handlers reload directly.
+
 - **drizzle-kit 0.31 quotes expression indexes wrongly** (`(\`lower("name")\`)` instead of
   `(lower("name"))`). Always read generated SQL; fix expression indexes by hand before the
   migration runs anywhere.
@@ -154,6 +176,8 @@ Set up on 08.10.2026, first test: `toUserMessage`. Next candidates, tests writte
 function: the date → `year_month` function (January, September, December, single-digit months),
 the chart segment computation (step 8). I write the functions myself from now on — I know the
 shape (guard clause, `includes`, red → green).
+**Lesson (12.10.2026):** green tests only prove the code matches the fake. Build fakes from what
+the device really produced (log it once), not from what the docs suggest.
 
 ## Later: bug reports (V3-6)
 
