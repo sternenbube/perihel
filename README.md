@@ -47,6 +47,7 @@ Concepts and best practices, independent of a specific setup.
 | [Local database and migrations](docs/learnings/migrations.md)    | Migrations on the phone, the golden rule, transactions, why Drizzle       |
 | [Styling with NativeWind](docs/learnings/styling.md)             | How className becomes style, React Native's layout rules, why NativeWind  |
 | [Engineering judgment](docs/learnings/engineering-judgment.md)   | Where to draw the line, loud bugs, postponing safely, changing decisions  |
+| [Error handling](docs/learnings/error-handling.md)               | Expected vs unexpected, where to catch, result vs throw, testing errors   |
 
 ### Guides
 
