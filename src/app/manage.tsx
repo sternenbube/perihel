@@ -14,12 +14,19 @@ type LoadState =
   | { status: "loaded"; data: CategoryWithAccounts[] }
   | { status: "failed" };
 
+type EditingCategory = {
+  id: number;
+  name: string;
+  error: string | null;
+} | null;
+
 export default function Manage() {
   const [text, setText] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loadState, setLoadState] = useState<LoadState>({
     status: "loading",
   });
+  const [editing, setEditing] = useState<EditingCategory>(null);
 
   useEffect(() => {
     async function load() {
@@ -37,6 +44,11 @@ export default function Manage() {
   function handleChangeText(newText: string) {
     setErrorMessage(null);
     setText(newText);
+  }
+
+  function handleEditChange(newName: string) {
+    if (editing === null) return;
+    setEditing({ ...editing, name: newName, error: null });
   }
 
   async function handleAdd() {
@@ -74,7 +86,25 @@ export default function Manage() {
       {loadState.data.length === 0 ? (
         <Text>No categories yet</Text>
       ) : (
-        loadState.data.map((cat) => <Text key={cat.id}>{cat.name}</Text>)
+        loadState.data.map((cat) =>
+          editing?.id === cat.id ? (
+            <View key={cat.id}>
+              <TextInput value={editing.name} onChangeText={handleEditChange} />
+              <Pressable onPress={() => setEditing(null)}>
+                <Text>Cancel</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <Pressable
+              key={cat.id}
+              onPress={() =>
+                setEditing({ id: cat.id, name: cat.name, error: null })
+              }
+            >
+              <Text>{cat.name}</Text>
+            </Pressable>
+          ),
+        )
       )}
       <TextInput
         value={text}

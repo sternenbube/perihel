@@ -185,6 +185,20 @@ The report button for unexpected errors is goal V3-6 (pre-filled email). Privacy
 show the user what will be sent, leave out query parameters (they can contain account names and
 values), send through the user's own email app. Copy: friendly but clear, not jokey.
 
+## Parked ideas
+
+Not in V1–V3. Noted so they don't get lost; decide when the time comes.
+
+- **Shortcut from Month detail to Manage** (13.10.2026). An edit link in Month detail that opens
+  Manage. Merging the two screens was dropped: viewing and managing stay separate
+  (`08-screens.md`). Candidate for the UX polish after V2.
+- **Promotion website** (14.10.2026). Apple-style product page (iPhone pages as reference):
+  high quality page as a promise of a high quality app. Interactive dummy screens to try the app
+  in the browser, or demo videos, then links to the stores. Depends on store publishing (N7, out
+  of scope for this project). Ideas: no tracking on the page either (same promise as the app);
+  check whether Expo's web build can turn the real screens with seed data into the demo (a demo
+  page is not a web version of the app, N11).
+
 ## Docs
 
 - `docs/process/`: the concept chapters 1–11.
