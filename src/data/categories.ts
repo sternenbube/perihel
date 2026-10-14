@@ -57,3 +57,24 @@ export async function getCategoriesWithAccounts(): Promise<
     accounts: accounts.filter((acc) => acc.categoryId === cat.id),
   }));
 }
+
+// Returns null when no category has this id: an id from the URL that leads
+// nowhere is not a bug, so the screen shows "not found" instead of an error.
+export async function getCategoryWithAccounts(
+  id: number,
+): Promise<CategoryWithAccounts | null> {
+  const categories = await db
+    .select()
+    .from(category)
+    .where(eq(category.id, id));
+  // TypeScript assumes categories[0] always exists, so check the length ourselves.
+  if (categories.length === 0) return null;
+
+  const accounts = await db
+    .select()
+    .from(account)
+    .where(eq(account.categoryId, id))
+    .orderBy(account.id);
+
+  return { ...categories[0], accounts };
+}
