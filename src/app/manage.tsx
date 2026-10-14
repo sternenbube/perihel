@@ -2,6 +2,7 @@ import {
   type CategoryWithAccounts,
   createCategory,
   getCategoriesWithAccounts,
+  renameCategory,
 } from "@/data/categories";
 import { useEffect, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
@@ -51,6 +52,23 @@ export default function Manage() {
     setEditing({ ...editing, name: newName, error: null });
   }
 
+  async function handleEditSave() {
+    if (editing === null) return;
+    try {
+      const result = await renameCategory(editing.id, editing.name);
+      if (!result.ok) {
+        setEditing({ ...editing, error: result.error });
+        return;
+      }
+      const data = await getCategoriesWithAccounts();
+      setLoadState({ status: "loaded", data });
+      setEditing(null);
+    } catch (error) {
+      console.error("saving failed: ", error);
+      setEditing({ ...editing, error: UNEXPECTED_ERROR_MESSAGE });
+    }
+  }
+
   async function handleAdd() {
     try {
       const result = await createCategory(text);
@@ -90,8 +108,12 @@ export default function Manage() {
           editing?.id === cat.id ? (
             <View key={cat.id}>
               <TextInput value={editing.name} onChangeText={handleEditChange} />
+              {editing.error !== null && <Text>{editing.error}</Text>}
               <Pressable onPress={() => setEditing(null)}>
                 <Text>Cancel</Text>
+              </Pressable>
+              <Pressable onPress={handleEditSave}>
+                <Text>Save</Text>
               </Pressable>
             </View>
           ) : (
