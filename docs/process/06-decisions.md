@@ -116,6 +116,29 @@ passed.
   function in the data layer — a candidate for a unit test.
 - Which x-axis labels are shown is decided when the chart data is prepared, not by the chart.
 
+### Decision 11: Accounts are managed on one screen per category
+
+_Made during the build, step 3 (14.10.2026)._
+
+**Options considered:** all categories with their accounts on one Manage screen; categories that
+expand in place to show their accounts; a separate screen per category.
+
+**Decision:** one screen per category. Manage lists the categories; tapping one opens a category
+screen with its name (renamable) and its accounts (add, rename).
+
+**Why:** it is the pattern of the operating system's settings, so it feels familiar, and the
+screen title makes clear which category is being edited. Each screen stays small, and one tap
+keeps one meaning: on Manage a tap opens, on the category screen a tap edits.
+
+**Consequences:**
+
+- A new route with the category id as a param, like the month detail.
+- The rename of a category moves from Manage to the category screen.
+- Categories and accounts are edited on the same screen, so the editing state must say what is
+  being edited, not only its id (ids of different tables can be equal).
+- Adding works the same way on both screens: a "+ Add" row at the end of the list opens an input
+  with Save and Cancel.
+
 ---
 
 [← Out of scope](05-out-of-scope.md)  ·  [Architecture and data model →](07-architecture.md)  ·  [Overview](../../README.md)
