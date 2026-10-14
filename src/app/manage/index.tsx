@@ -4,6 +4,7 @@ import {
   getCategoriesWithAccounts,
   renameCategory,
 } from "@/data/categories";
+import { Link, Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 
@@ -88,55 +89,53 @@ export default function Manage() {
     }
   }
 
-  if (loadState.status === "loading") return null;
-  if (loadState.status === "failed") {
+  // Only the content depends on the load state; the title and frame are always shown.
+  function renderContent() {
+    if (loadState.status === "loading") return null;
+    if (loadState.status === "failed") {
+      return <Text>{UNEXPECTED_ERROR_MESSAGE}</Text>;
+    }
+
     return (
-      <View className="items-center justify-center flex-1 bg-purple-300">
-        <Text>{UNEXPECTED_ERROR_MESSAGE}</Text>
-      </View>
+      <>
+        {loadState.data.length === 0 ? (
+          <Text>No categories yet</Text>
+        ) : (
+          loadState.data.map((cat) => (
+            <Link
+              key={cat.id}
+              href={{
+                pathname: "/manage/[categoryId]",
+                params: { categoryId: cat.id },
+              }}
+              asChild
+            >
+              <Pressable>
+                <Text>{cat.name}</Text>
+              </Pressable>
+            </Link>
+          ))
+        )}
+        <TextInput
+          value={text}
+          onChangeText={handleChangeText}
+          placeholder="Bank/ETF/Cash"
+        />
+        {errorMessage !== null && <Text>{errorMessage}</Text>}
+        <Pressable onPress={handleAdd}>
+          <Text>Add</Text>
+        </Pressable>
+      </>
     );
   }
 
   return (
-    <View className="items-center justify-center flex-1 bg-purple-300">
-      <Text className="text-2xl font-bold">Manage</Text>
-
-      {loadState.data.length === 0 ? (
-        <Text>No categories yet</Text>
-      ) : (
-        loadState.data.map((cat) =>
-          editing?.id === cat.id ? (
-            <View key={cat.id}>
-              <TextInput value={editing.name} onChangeText={handleEditChange} />
-              {editing.error !== null && <Text>{editing.error}</Text>}
-              <Pressable onPress={() => setEditing(null)}>
-                <Text>Cancel</Text>
-              </Pressable>
-              <Pressable onPress={handleEditSave}>
-                <Text>Save</Text>
-              </Pressable>
-            </View>
-          ) : (
-            <Pressable
-              key={cat.id}
-              onPress={() =>
-                setEditing({ id: cat.id, name: cat.name, error: null })
-              }
-            >
-              <Text>{cat.name}</Text>
-            </Pressable>
-          ),
-        )
-      )}
-      <TextInput
-        value={text}
-        onChangeText={handleChangeText}
-        placeholder="Bank/ETF/Cash"
-      />
-      {errorMessage !== null && <Text>{errorMessage}</Text>}
-      <Pressable onPress={handleAdd}>
-        <Text>Add</Text>
-      </Pressable>
-    </View>
+    <>
+      <Stack.Title>Manage</Stack.Title>
+      <View className="items-center justify-center flex-1 bg-purple-300">
+        <Text className="text-2xl font-bold">Manage</Text>
+        {renderContent()}
+      </View>
+    </>
   );
 }
