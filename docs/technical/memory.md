@@ -1,7 +1,7 @@
 # Session memory
 
 Where the build stands between sessions, so work can continue on any computer.
-Loaded automatically through `CLAUDE.md`. Last updated: 12.10.2026.
+Loaded automatically through `CLAUDE.md`. Last updated: 19.10.2026.
 
 ## Where we left off
 
@@ -58,17 +58,53 @@ wrapped in a plain `View` to centre it. **Start step 8 from it.** The chart pack
   `handleAdd` (create → on `{ ok: false }` show `errorMessage`, keep the text; on success reload,
   clear text and message). `handleChangeText` clears the message while typing. Errors render with
   `errorMessage !== null &&` (never `"" &&` in React Native: a bare string crashes).
-- **Next in step 3:** bite 3b, the **screen-level catch** in `handleAdd` (and the initial load):
-  unexpected errors → general message ("Something went wrong on our side…") + `console.error`.
-  Right now they end as "Uncaught (in promise)", which does nothing visible in a release build.
-  Then: rename a category, then the same for accounts (create, rename).
+- **Screen-level catch done (13.10.2026):** `handleAdd` and the initial load catch unexpected
+  errors → `UNEXPECTED_ERROR_MESSAGE` (constant at the top of the file) + `console.error`.
+  Load state is a discriminated union `LoadState` (`loading` / `loaded` with `data` / `failed`).
+  Title and frame always render; only `renderContent()` inside depends on the status.
+- **Rename category done in place (13.10.2026)**, then superseded by Decision 11 below. The code
+  (`editing` union state, `handleEditChange`, `handleEditSave`) is still in
+  `manage/index.tsx`, **unused** since rows became links. It moves to the category screen.
+- **Decision 11 (14.10.2026): one screen per category.** Manage lists categories; tapping one
+  opens `manage/[categoryId].tsx` with its name (renamable) and its accounts (add, rename).
+  Adding works the same on both screens: a "+ Add" row at the end of the list opens an input with
+  Save and Cancel. The editing state must say *what* is edited (`kind`: category name / account /
+  new account), because ids of different tables can be equal.
+- **Routing done (14.10.2026):** `manage.tsx` moved to `manage/index.tsx` (`git mv`), Manage rows
+  are `Link`s with an href object to `/manage/[categoryId]`. **Title rule B:** every screen sets
+  its own `Stack.Title`; `_layout.tsx` is just `<Stack />` (entries only when a screen needs
+  navigator options).
+- **`getCategoryWithAccounts(id)` done (14.10.2026)** in `categories.ts`: returns
+  `CategoryWithAccounts | null`. `null` = no such id (not a bug: a URL that leads nowhere).
+  Category query first, `length === 0` → `null`, then the accounts with `where` + `orderBy`.
+
+**Start of the next session (decided 19.10.2026):** I answer these framing questions for the
+category screen first, then theory and challenge:
+1. Which statuses does its `LoadState` need, compared to Manage's three, and what does "loaded"
+   carry?
+2. In which order do converting the id, checking `Number.isInteger` and the query happen, and
+   should the query run at all for an invalid id?
+3. Should the effect's dependency list stay `[]`, or does `categoryId` belong in it? What would
+   happen if the param changed while the screen stays open?
+4. What does the header show while loading, when not found, and when loading failed?
+
+**V1 target moved to the end of November 2026** (19.10.2026, from the end of October: steps 4–9
+did not fit into 12 days). In `roadmap.md`; `03-goals.md` still says October, see the open to-do
+below.
 
 **Next:**
 
 1. ~~Middle path~~ decided: **seeds (option C)** — a dev-only function writes deliberately awkward
    test data into the real database through the real data functions. Set it up before step 6.
-2. **Step 3: finish the Manage screen (V1-2)**, in bites: screen-level catch (3b), rename
-   categories, accounts (create, rename).
+2. **Step 3, next bite: the category screen** (`manage/[categoryId].tsx`, shows only the raw id
+   so far): load it with `getCategoryWithAccounts`, check the id, not-found, the category name as
+   the title. Same shape as Manage (title outside, `renderContent()` inside). Starts with the
+   framing questions above; their answers are deliberately not written here.
+3. Then: move the rename code from Manage to the category screen (with the `kind` union), the
+   "+ Add category" row on Manage, then adding and renaming accounts. Rows need a tap cue
+   (chevron or pencil) in a later styling pass.
+4. **Open to-do:** move the V1 date in `docs/process/03-goals.md` to the end of November and note
+   the change in `09-implementation-notes.md` (draft shown in the chat on 19.10.2026, not applied).
 
 **Version caution:** Drizzle docs are written for the 1.0 RC; we use stable 0.45. Check imports
 and APIs against the installed package (`node_modules/drizzle-orm/expo-sqlite/`) before advising.
@@ -78,7 +114,8 @@ Expo docs: always the SDK 57 versioned pages.
 
 - **Step 1 done:** empty screens with a Stack. `src/app/`: `index.tsx` (Home, `/`), `entry.tsx`,
   `month/[month].tsx` (reads the param, header via `Stack.Title`), `settings.tsx` (one link to
-  Manage), `manage.tsx`. Each screen has its own background colour for now.
+  Manage), `manage/index.tsx`, `manage/[categoryId].tsx`. Each screen has its own background
+  colour for now.
 - **Styling:** NativeWind 4.2.7 with Tailwind v3, works on the phone. Decision 3.
 - **Step 2a done:** Drizzle 0.45 + drizzle-kit 0.31 + `expo-sqlite` 57, configured
   (`drizzle.config.ts`, Babel inline-import, Metro `sql` extension). Schema in
@@ -108,15 +145,10 @@ same account and month. Correcting a value therefore needs an update (or upsert)
 
 ## Build order
 
-1. ~~Empty screens and navigation~~ done
-2. ~~Open the database, migration 1, chart test~~ done (Decisions 9 and 10)
-3. **Next:** data functions for categories and accounts, Manage screen (V1-2) — first real queries
-4. Entry flow, one account at a time (V1-3, V1-4)
-5. Resume an interrupted entry (V1-5) — adds the snapshot status as migration 2
-6. Home: total and change since last month (V1-6)
-7. Month detail with previous/next and corrections (V1-8, V1-9)
-8. Chart (V1-7) — start from the `spike-chart` branch; segments and labels computed in the data layer
-9. Development build, check that an update keeps the data (V1-1, V1-10)
+In [roadmap.md](roadmap.md). Notes that belong to single steps:
+
+- Step 5 adds the snapshot status as a migration.
+- Step 8 starts from the `spike-chart` branch; segments and labels are computed in the data layer.
 
 **Decided — seeds (option C):** screens that show data use real queries from the start. Test data
 comes from a dev-only seed that writes deliberately awkward data (a missing month, a negative
@@ -198,12 +230,23 @@ Not in V1–V3. Noted so they don't get lost; decide when the time comes.
   of scope for this project). Ideas: no tracking on the page either (same promise as the app);
   check whether Expo's web build can turn the real screens with seed data into the demo (a demo
   page is not a web version of the app, N11).
+- **Flatter settings** (14.10.2026). "Manage" stays the title for now. Maybe later: settings less
+  deeply nested, and the check day as its own setting instead of inside Manage.
+
+## Dev-process tips
+
+Collected on the go; a `docs/learnings/` file once there are enough.
+
+- **Sketch a screen's interactions before its first bite** (14.10.2026): elements, what each tap
+  does, the states and errors. Paper is enough. Visual polish can come later. (Manage's look was
+  deliberately not designed, but its interactions weren't either, so UI questions came up while
+  coding.)
 
 ## Docs
 
 - `docs/process/`: the concept chapters 1–11.
 - `docs/learnings/`: concepts and best practices. Done: schema design, migrations, styling,
-  engineering judgment. New topics only when I name them.
+  engineering judgment, error handling. New topics only when I name them.
 - `docs/guides/`: step-by-step instructions to repeat. Done: setup, commits, database setup
   (complete), NativeWind setup, testing setup.
 - `docs/technical/`: this file, `DEFAULT_README.md`.
@@ -237,7 +280,11 @@ These add to `CLAUDE.md`.
 - **Check-questions are optional.** One at a time at most; when I want to move on, move on.
 - **Over-engineering:** I want good practice, not overkill. Use the "permanent, silent, cheap"
   test and say when something is overkill.
-- **Next steps:** every reply ends with a bullet list of what I should change or fix next.
+- **Next steps:** every reply ends with one "Next steps" list (to-dos and the challenge together)
+  and all open questions written out in full. No repeated reminders I already acknowledged.
+- **Options at the end (since 13.10.2026):** **w** = next bite (its framing questions come at the
+  start of that bite, not at the end of the previous one), **r** = review my fixes in the code,
+  **e** = end the session and update this file.
 - **Background:** I know React, Next.js and Tailwind and studied software engineering. First
   React Native app, first SQLite on a device. Styling is not my strength. My goal is to think and
   judge like an engineer, not to memorise syntax.

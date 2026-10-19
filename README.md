@@ -66,6 +66,7 @@ Step-by-step instructions for things to repeat.
 | File                                                  | What it is                                                       |
 | ----------------------------------------------------- | ---------------------------------------------------------------- |
 | [memory.md](docs/technical/memory.md)                 | Where the build stands between sessions, and the next step       |
+| [roadmap.md](docs/technical/roadmap.md)               | What gets built in which order, with the V1 build steps checked  |
 | [CLAUDE.md](CLAUDE.md)                                | How Claude works on this project                                 |
 | [AGENTS.md](AGENTS.md)                                | Instructions for coding agents: use the Expo SDK 57 docs         |
 | [DEFAULT_README.md](docs/technical/DEFAULT_README.md) | The README that `create-expo-app` generated, kept for reference  |
